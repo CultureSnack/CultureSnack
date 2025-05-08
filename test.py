@@ -7,12 +7,12 @@ import os
 load_dotenv()
 
 # 환경변수에서 URL 읽기
-Khs_url = os.getenv("KHS_API_URL")
-if Khs_url is None:
+KHS_API_URL = os.getenv("KHS_API_URL")
+if KHS_API_URL is None:
     raise ValueError("KHS_API_URL 환경 변수가 설정되지 않았습니다.")
 
 # API 요청 URL 및 파라미터 설정
-url = Khs_url
+url = KHS_API_URL
 params = {
     "ccbaKdcd": "11",     # 국보
     "ccbaCtcd": "11",     # 서울특별시
