@@ -1,0 +1,14 @@
+.cultureSnackMain {
+    background: #0d1b2a;
+    height: 852px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ... 나머지 스타일도 .module.css로 분리 ... */
+.arrowBackInstance {
+    position: absolute !important;
+    left: 184px !important;
+    top: 834px !important;
+    transform: translate(0px, -24px) !important;
+}
