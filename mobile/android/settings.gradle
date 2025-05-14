@@ -1,6 +1,0 @@
-rootProject.name = 'mobile'
-
-// apply from: file("../node_modules/react-native/react.gradle")
-
-include ':app'
-includeBuild('../node_modules/react-native/android')
