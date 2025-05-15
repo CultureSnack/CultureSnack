@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import { getFont, getFontSize, getLineHeight, getLetterSpacing, scale, verticalScale } from '../../utils/responsive';
 
 export default function SubTitle() {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Savor culture lightly,{"\n"}Remember{"\n"} deeply</Text>
+            <Text style={styles.title}>Savor culture{"\n"} lightly,{"\n"}Remember{"\n"}deeply</Text>
             <Text style={styles.desc}>A piece of culture you can't forget.</Text>
         </View>
     );
@@ -12,38 +13,29 @@ export default function SubTitle() {
 
 const styles = StyleSheet.create({
     container: {
-        position: 'absolute',
-        left: 124,
-        top: 445,
-        width: 245,
-        height: 189,
+        width: '100%',
+        alignItems: 'flex-end',
+        marginTop: verticalScale(970),
+        marginBottom: verticalScale(20),
+        paddingRight: scale(80),
     },
     title: {
-        position: 'absolute',
-        left: 15,
-        top: 0,
-        width: 223,
-        height: 177,
+        fontFamily: getFont('bold'),
+        fontSize: getFontSize(20),
+        lineHeight: getLineHeight(40),
+        letterSpacing: getLetterSpacing(2.0),
         color: '#F0F0F0',
-        fontFamily: Platform.OS === 'ios' ? 'Playfair Display' : 'PlayfairDisplay-Bold',
         fontWeight: '700',
-        fontSize: 32,
-        lineHeight: 42,
         textAlign: 'right',
-        letterSpacing: 0.5,
+        // marginBottom: verticalScale(32),
     },
     desc: {
-        position: 'absolute',
-        left: 0,
-        top: 170,
-        width: 245,
-        height: 24,
+        fontFamily: getFont(),
+        fontSize: getFontSize(12),
+        lineHeight: getLineHeight(30),
+        letterSpacing: getLetterSpacing(0.8),
         color: '#F0F0F0',
-        fontFamily: Platform.OS === 'ios' ? 'Playfair Display' : 'PlayfairDisplay-Regular',
         fontWeight: '400',
-        fontSize: 16,
-        lineHeight: 24,
-        textAlign: 'right',
-        letterSpacing: 0.3,
+        textAlign: 'center',
     },
 });

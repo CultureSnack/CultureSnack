@@ -16,13 +16,13 @@ export default function MainImage() {
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        left: 52,
-        top: 160,
+        left: 77,
+        top: 220,
         width: 289,
         height: 289,
     },
     image: {
-        width: '100%',
-        height: '100%',
+        width: '80%',
+        height: '80%',
     },
 });

@@ -1,0 +1,18 @@
+{
+    "expo": {
+        "fonts": [
+            {
+                "asset": "assets/fonts/PlayfairDisplay-Regular.ttf",
+                "family": "PlayfairDisplay-Regular"
+            },
+            {
+                "asset": "assets/fonts/PlayfairDisplay-SemiBold.ttf",
+                "family": "PlayfairDisplay-SemiBold"
+            },
+            {
+                "asset": "assets/fonts/PlayfairDisplay-Bold.ttf",
+                "family": "PlayfairDisplay-Bold"
+            }
+        ]
+    }
+}

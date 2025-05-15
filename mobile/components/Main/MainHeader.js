@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet, Platform } from 'react-native';
+import { getFont, getFontSize, getLineHeight, getLetterSpacing, scale, verticalScale } from '../../utils/responsive';
 
 export default function MainHeader() {
     return (
@@ -11,18 +12,15 @@ export default function MainHeader() {
 
 const styles = StyleSheet.create({
     header: {
-        position: 'absolute',
-        left: 21,
-        top: 47,
-        width: 351,
-        height: 67,
+        width: '100%',
+        alignItems: 'center',
+        marginTop: verticalScale(140),
     },
     logo: {
         color: '#DAA520',
-        fontSize: 56,
-        fontWeight: '600',
-        fontFamily: Platform.OS === 'ios' ? 'Playfair Display' : 'PlayfairDisplay-SemiBold',
-        lineHeight: 67,
-        letterSpacing: 0.8,
+        fontFamily: getFont('bold'),
+        fontSize: getFontSize(52),
+        letterSpacing: getLetterSpacing(1.7),
+        fontWeight: '700',
     },
 });
