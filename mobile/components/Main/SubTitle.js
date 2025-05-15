@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 
 export default function SubTitle() {
     return (
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     container: {
         position: 'absolute',
         left: 124,
-        top: 464,
+        top: 445,
         width: 245,
         height: 189,
     },
@@ -25,23 +25,25 @@ const styles = StyleSheet.create({
         width: 223,
         height: 177,
         color: '#F0F0F0',
-        fontFamily: 'Playfair Display',
+        fontFamily: Platform.OS === 'ios' ? 'Playfair Display' : 'PlayfairDisplay-Bold',
         fontWeight: '700',
         fontSize: 32,
         lineHeight: 42,
         textAlign: 'right',
+        letterSpacing: 0.5,
     },
     desc: {
         position: 'absolute',
         left: 0,
-        top: 140,
+        top: 170,
         width: 245,
         height: 24,
         color: '#F0F0F0',
-        fontFamily: 'Playfair Display',
+        fontFamily: Platform.OS === 'ios' ? 'Playfair Display' : 'PlayfairDisplay-Regular',
         fontWeight: '400',
         fontSize: 16,
         lineHeight: 24,
         textAlign: 'right',
+        letterSpacing: 0.3,
     },
 });

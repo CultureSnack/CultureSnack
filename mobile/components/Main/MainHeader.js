@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Platform } from 'react-native';
 
 export default function MainHeader() {
     return (
@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
         color: '#DAA520',
         fontSize: 56,
         fontWeight: '600',
-        fontFamily: 'Playfair Display',
+        fontFamily: Platform.OS === 'ios' ? 'Playfair Display' : 'PlayfairDisplay-SemiBold',
         lineHeight: 67,
+        letterSpacing: 0.8,
     },
 });

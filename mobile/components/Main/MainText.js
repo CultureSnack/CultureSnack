@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 
 export default function MainText() {
     return (
@@ -26,10 +26,11 @@ const styles = StyleSheet.create({
         width: 245,
         height: 18,
         color: '#F0F0F0',
-        fontFamily: 'Playfair Display',
+        fontFamily: Platform.OS === 'ios' ? 'Playfair Display' : 'PlayfairDisplay-Regular',
         fontSize: 12,
         fontWeight: '400',
         lineHeight: 18,
         textAlign: 'left',
+        letterSpacing: 0.2,
     },
 });
