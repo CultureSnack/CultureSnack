@@ -18,14 +18,14 @@ const styles = StyleSheet.create({
     left: {
         position: 'absolute',
         left: -54,
-        top: 560,
+        top: 570,
         width: 262,
         height: 262,
     },
     right: {
         position: 'absolute',
         left: 185,
-        top: 560,
+        top: 570,
         width: 262,
         height: 262,
     },
