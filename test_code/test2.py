@@ -70,7 +70,7 @@ def get_cultural_heritage_description(user_input):
         }, ensure_ascii=False)
 
 # 예시 사용
-user_input = "화각참빗"
+user_input = "촛대"
 result = get_cultural_heritage_description(user_input)
 parsed_result = json.loads(result)
 print("요약 내용:", parsed_result["summary"])
