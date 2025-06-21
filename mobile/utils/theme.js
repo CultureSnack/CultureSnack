@@ -1,37 +1,52 @@
-// utils/theme.js - 완전히 새로운 완벽한 시스템
+// utils/theme.js - 최종 완성본
 import { Dimensions, PixelRatio } from 'react-native';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-// 🎯 기준 화면 (중간 크기 기준)
-const DESIGN_WIDTH = 393;   // iPhone 14 Pro
-const DESIGN_HEIGHT = 852;  // iPhone 14 Pro
+// 🎯 기준 화면 (iPhone 14 Pro)
+const DESIGN_WIDTH = 393;
+const DESIGN_HEIGHT = 852;
 
-// 📐 완벽한 비율 계산
-const WIDTH_SCALE = SCREEN_WIDTH / DESIGN_WIDTH;
-const HEIGHT_SCALE = SCREEN_HEIGHT / DESIGN_HEIGHT;
+// 📐 정확한 비율 계산
+const WIDTH_RATIO = SCREEN_WIDTH / DESIGN_WIDTH;
+const HEIGHT_RATIO = SCREEN_HEIGHT / DESIGN_HEIGHT;
 
-// 🔧 핵심 스케일링 함수들
-export const scale = (size) => {
-  const scaled = size * WIDTH_SCALE;
-  return Math.round(PixelRatio.roundToNearestPixel(scaled));
+// 🔧 완벽한 픽셀 계산
+const perfectPixel = (size, ratio) => {
+  return Math.round(PixelRatio.roundToNearestPixel(size * ratio));
 };
 
-export const verticalScale = (size) => {
-  const scaled = size * HEIGHT_SCALE;
-  return Math.round(PixelRatio.roundToNearestPixel(scaled));
+export const w = (size) => perfectPixel(size, WIDTH_RATIO);
+export const h = (size) => perfectPixel(size, HEIGHT_RATIO);
+
+// 🔤 스마트 폰트 크기 계산 (텍스트 줄바꿈 방지)
+export const smartFont = (baseSize, text, maxWidth) => {
+  const textLength = text.length;
+  const availableWidth = maxWidth;
+  
+  // 텍스트 밀도 계산
+  const densityFactor = textLength / availableWidth * 1000;
+  
+  let fontSize = w(baseSize);
+  
+  // 텍스트가 길고 화면이 작으면 폰트 크기 자동 조정
+  if (densityFactor > 15) {
+    fontSize = fontSize * 0.85; // 15% 작게
+  } else if (densityFactor > 12) {
+    fontSize = fontSize * 0.92; // 8% 작게
+  }
+  
+  return Math.round(fontSize);
 };
 
-export const fontScale = (size) => {
-  // 폰트는 너무 크거나 작아지지 않게 제한
-  const limitedScale = Math.min(Math.max(WIDTH_SCALE, 0.85), 1.25);
-  const scaled = size * limitedScale;
-  return Math.round(PixelRatio.roundToNearestPixel(scaled));
+// 📱 화면 비율 기준 위치
+export const screenPercent = {
+  width: (percent) => SCREEN_WIDTH * (percent / 100),
+  height: (percent) => SCREEN_HEIGHT * (percent / 100),
 };
 
-// 🎨 완벽한 디자인 토큰
+// 🎨 테마 시스템
 export const theme = {
-  // 색상 시스템
   colors: {
     primary: '#DAA520',
     background: '#0D1B2A',
@@ -39,133 +54,150 @@ export const theme = {
     secondary: '#CCCCCC',
   },
   
-  // 폰트 시스템
   fonts: {
     regular: 'PlayfairDisplay-Regular',
     semibold: 'PlayfairDisplay-SemiBold',
     bold: 'PlayfairDisplay-Bold',
   },
   
-  // 간격 시스템
-  spacing: {
-    xs: scale(4),
-    sm: scale(8),
-    md: scale(16),
-    lg: scale(24),
-    xl: scale(32),
-    xxl: scale(48),
-  },
-  
-  // 화면 정보
   screen: {
     width: SCREEN_WIDTH,
     height: SCREEN_HEIGHT,
-    availableHeight: SCREEN_HEIGHT * 0.95, // 상태바 등 고려
+    widthRatio: WIDTH_RATIO,
+    heightRatio: HEIGHT_RATIO,
   },
 };
 
-// 🎯 메인 화면 전용 레이아웃 (한 화면에 모든 요소가 들어가도록 계산)
-export const mainLayout = {
-  // 헤더 영역 (화면 상단 15%)
+// 🎯 레이아웃 (화면 비율 기준)
+export const layout = {
   header: {
-    height: theme.screen.availableHeight * 0.15,
-    paddingTop: verticalScale(20),
+    topPercent: 2,      // 화면 상단 2%부터
+    heightPercent: 15,  // 화면 높이의 15%
   },
   
-  // 메인 텍스트 영역 (화면 20%)
   mainText: {
-    height: theme.screen.availableHeight * 0.20,
-    paddingLeft: scale(25),
-    paddingTop: verticalScale(10),
+    topPercent: 17,     // 화면 17%부터
+    heightPercent: 18,  // 화면 높이의 18%
+    leftPercent: 6,     // 화면 왼쪽에서 6%
+    rightPercent: 6,    // 화면 오른쪽에서 6%
   },
   
-  // 이미지 영역 (화면 중앙 35%)
   image: {
-    height: theme.screen.availableHeight * 0.35,
-    centerY: theme.screen.availableHeight * 0.45, // 화면 45% 지점에 중앙
+    centerXPercent: 50, // 화면 가로 중앙
+    centerYPercent: 42, // 화면 세로 42% 지점
+    sizePercent: 40,    // 화면 너비의 28%
   },
   
-  // 서브 타이틀 영역 (화면 하단 25%)
   subtitle: {
-    height: theme.screen.availableHeight * 0.25,
-    startY: theme.screen.availableHeight * 0.70, // 화면 70% 지점부터
-    paddingRight: scale(25),
+    topPercent: 65,     // 화면 65%부터
+    heightPercent: 30,  // 화면 높이의 30%
+    rightPercent: 6,    // 화면 오른쪽에서 6%
+    leftPercent: 6,     // 화면 왼쪽에서 6%
   },
   
-  // 장식 이미지들 (이미지 영역과 겹치도록)
   decorative: {
-    y: theme.screen.availableHeight * 0.40, // 메인 이미지와 같은 높이
+    yPercent: 85,       // 화면 35% 높이
+    leftXPercent: -6,   // 화면 왼쪽에서 -8%
+    rightXPercent: 75,  // 화면 75% 지점
+    sizePercent: 32,    // 화면 너비의 22%
   },
 };
 
-// 📱 타이포그래피 (화면 비율에 맞춰 조정)
+// 📝 스마트 타이포그래피 (줄바꿈 방지)
 export const typography = {
   // 메인 로고
   logo: {
-    fontSize: fontScale(Math.min(SCREEN_WIDTH * 0.13, 52)), // 화면 너비의 13% (최대 52)
+    fontSize: smartFont(64, "CultureSnack", SCREEN_WIDTH * 0.9),
     fontFamily: theme.fonts.bold,
     color: theme.colors.primary,
-    letterSpacing: scale(1.5),
+    letterSpacing: w(1.5),
+    lineHeight: h(60),
+    textAlign: 'center',
   },
   
-  // 메인 텍스트 (3줄)
+  // 메인 텍스트 (각 줄별로 개별 계산)
   mainText: {
-    fontSize: fontScale(Math.min(SCREEN_WIDTH * 0.040, 16)), // 화면 너비의 4% (최대 16)
-    fontFamily: theme.fonts.regular,
-    color: theme.colors.text,
-    lineHeight: verticalScale(22),
-    letterSpacing: scale(0.3),
+    line1: {
+      fontSize: smartFont(14, "Culture, reimagined in the language of Gen Z.", SCREEN_WIDTH * 0.88),
+      fontFamily: theme.fonts.regular,
+      color: theme.colors.text,
+      letterSpacing: w(0.3),
+      lineHeight: h(24),
+    },
+    line2: {
+      fontSize: smartFont(14, "Less jargon, more clarity.", SCREEN_WIDTH * 0.88),
+      fontFamily: theme.fonts.regular,
+      color: theme.colors.text,
+      letterSpacing: w(0.3),
+      lineHeight: h(24),
+    },
+    line3: {
+      fontSize: smartFont(14, "AI reads it. We tell it simply.", SCREEN_WIDTH * 0.88),
+      fontFamily: theme.fonts.regular,
+      color: theme.colors.text,
+      letterSpacing: w(0.3),
+      lineHeight: h(24),
+    },
   },
   
-  // 서브 타이틀
+  // 서브타이틀
   subtitle: {
-    fontSize: fontScale(Math.min(SCREEN_WIDTH * 0.070, 28)), // 화면 너비의 7% (최대 28)
-    fontFamily: theme.fonts.bold,
-    color: theme.colors.text,
-    lineHeight: verticalScale(36),
-    letterSpacing: scale(1.2),
+    multiLine: {
+      fontSize: smartFont(28, "Savor culture lightly, Remember deeply", SCREEN_WIDTH * 0.70),
+      fontFamily: theme.fonts.bold,
+      color: theme.colors.text,
+      letterSpacing: w(1.2),
+      lineHeight: h(38),
+      textAlign: 'right',
+      marginTop: h(-90),
+    },
   },
   
-  // 설명 텍스트
+  // 설명 텍스트 (한 줄 보장)
   description: {
-    fontSize: fontScale(Math.min(SCREEN_WIDTH * 0.035, 14)), // 화면 너비의 3.5% (최대 14)
+    fontSize: smartFont(14, "A piece of culture you can't forget.", SCREEN_WIDTH * 0.70),
     fontFamily: theme.fonts.regular,
     color: theme.colors.secondary,
-    lineHeight: verticalScale(20),
-    letterSpacing: scale(0.5),
+    letterSpacing: w(0.5),
+    lineHeight: h(20),
+    textAlign: 'center',
+    marginTop: h(12),
   },
 };
 
-// 🖼️ 이미지 크기 (화면 비율에 맞춰)
-export const imageLayout = {
-  // 메인 이미지
+// 🖼️ 이미지 레이아웃
+export const images = {
   main: {
-    size: Math.min(SCREEN_WIDTH * 0.6, SCREEN_HEIGHT * 0.25), // 화면의 60% 또는 높이의 25% 중 작은 값
-    centerX: SCREEN_WIDTH / 2,
-    centerY: mainLayout.image.centerY,
+    size: screenPercent.width(layout.image.sizePercent),
+    centerX: screenPercent.width(layout.image.centerXPercent),
+    centerY: screenPercent.height(layout.image.centerYPercent),
   },
   
-  // 장식 이미지들
-  decorativeSize: Math.min(SCREEN_WIDTH * 0.45, 180), // 화면의 45% (최대 180)
-  decorativeLeft: {
-    x: -scale(30), // 왼쪽으로 약간 나가도록
-    y: mainLayout.decorative.y,
-  },
-  decorativeRight: {
-    x: SCREEN_WIDTH - scale(150), // 오른쪽에 적절히 위치
-    y: mainLayout.decorative.y,
+  decorative: {
+    size: screenPercent.width(layout.decorative.sizePercent),
+    leftX: screenPercent.width(layout.decorative.leftXPercent),
+    rightX: screenPercent.width(layout.decorative.rightXPercent),
+    y: screenPercent.height(layout.decorative.yPercent),
   },
 };
 
 // 🔍 디버그 정보
 export const debugInfo = () => {
-  console.log('=== Perfect Theme Debug ===');
-  console.log(`화면 크기: ${SCREEN_WIDTH}x${SCREEN_HEIGHT}`);
-  console.log(`기준 크기: ${DESIGN_WIDTH}x${DESIGN_HEIGHT}`);
-  console.log(`가로 비율: ${(WIDTH_SCALE * 100).toFixed(1)}%`);
-  console.log(`세로 비율: ${(HEIGHT_SCALE * 100).toFixed(1)}%`);
-  console.log(`사용 가능 높이: ${theme.screen.availableHeight.toFixed(0)}px`);
-  console.log('===========================');
+  console.log('=== 완벽한 반응형 시스템 ===');
+  console.log(`📱 화면: ${SCREEN_WIDTH}x${SCREEN_HEIGHT}`);
+  console.log(`📐 가로 비율: ${(WIDTH_RATIO * 100).toFixed(1)}%`);
+  console.log(`📐 세로 비율: ${(HEIGHT_RATIO * 100).toFixed(1)}%`);
+  console.log(`🔤 로고 폰트: ${typography.logo.fontSize}px`);
+  console.log(`📝 본문 폰트: ${typography.mainText.line1.fontSize}px`);
+  console.log(`💬 설명 폰트: ${typography.description.fontSize}px`);
+  console.log('============================');
+};
+
+export const pos = {
+  x: (percent) => screenPercent.width(percent),
+  y: (percent) => screenPercent.height(percent),
+  centerX: (width) => (SCREEN_WIDTH - width) / 2,
+  centerY: (height) => (SCREEN_HEIGHT - height) / 2,
 };
 
 export default theme;
