@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { getFont, getFontSize, getLineHeight, getLetterSpacing, scale, verticalScale } from '../../utils/responsive';
+import { scale, verticalScale } from '../../utils/theme';
 
 export default function SubTitle() {
     return (
@@ -20,20 +20,19 @@ const styles = StyleSheet.create({
         paddingRight: scale(80),
     },
     title: {
-        fontFamily: getFont('bold'),
-        fontSize: getFontSize(20),
-        lineHeight: getLineHeight(40),
-        letterSpacing: getLetterSpacing(2.0),
+        fontFamily: 'PlayfairDisplay-Bold',
+        fontSize: scale(40),
+        lineHeight: verticalScale(60),
+        letterSpacing: scale(2.0),
         color: '#F0F0F0',
         fontWeight: '700',
         textAlign: 'right',
-        // marginBottom: verticalScale(32),
     },
     desc: {
-        fontFamily: getFont(),
-        fontSize: getFontSize(12),
-        lineHeight: getLineHeight(30),
-        letterSpacing: getLetterSpacing(0.8),
+        fontFamily: 'PlayfairDisplay-Regular',
+        fontSize: scale(20),
+        lineHeight: verticalScale(30),
+        letterSpacing: scale(0.8),
         color: '#F0F0F0',
         fontWeight: '400',
         textAlign: 'center',
