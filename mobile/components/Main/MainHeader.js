@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, View, StyleSheet, Platform } from 'react-native';
-import { getFont, getFontSize, getLineHeight, getLetterSpacing, scale, verticalScale } from '../../utils/responsive';
+import { Text, View, StyleSheet } from 'react-native';
+import { scale, verticalScale } from '../../utils/theme';
 
 export default function MainHeader() {
     return (
@@ -14,13 +14,13 @@ const styles = StyleSheet.create({
     header: {
         width: '100%',
         alignItems: 'center',
-        marginTop: verticalScale(140),
+        marginTop: verticalScale(40),
     },
     logo: {
         color: '#DAA520',
-        fontFamily: getFont('bold'),
-        fontSize: getFontSize(52),
-        letterSpacing: getLetterSpacing(1.7),
+        fontFamily: 'PlayfairDisplay-Bold',
+        fontSize: scale(60),
+        letterSpacing: scale(4),
         fontWeight: '700',
     },
 });

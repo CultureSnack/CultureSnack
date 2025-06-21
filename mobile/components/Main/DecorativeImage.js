@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, StyleSheet } from 'react-native';
+import { scale, verticalScale } from '../../utils/theme';
 
 export default function DecorativeImage() {
     return (
@@ -17,17 +18,17 @@ export default function DecorativeImage() {
 const styles = StyleSheet.create({
     left: {
         position: 'absolute',
-        left: -54,
-        top: 570,
-        width: 262,
-        height: 262,
+        left: scale(-54),
+        top: verticalScale(570),
+        width: scale(262),
+        height: scale(262),
     },
     right: {
         position: 'absolute',
-        left: 185,
-        top: 570,
-        width: 262,
-        height: 262,
+        left: scale(185),
+        top: verticalScale(570),
+        width: scale(262),
+        height: scale(262),
     },
     img: {
         width: '100%',
