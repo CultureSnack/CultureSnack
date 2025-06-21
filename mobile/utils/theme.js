@@ -85,11 +85,11 @@ export const layout = {
   image: {
     centerXPercent: 50, // 화면 가로 중앙
     centerYPercent: 42, // 화면 세로 42% 지점
-    sizePercent: 40,    // 화면 너비의 28%
+    sizePercent: 55,    // 화면 너비의 55%
   },
   
   subtitle: {
-    topPercent: 65,     // 화면 65%부터
+    topPercent: 70,     // 화면 70%부터
     heightPercent: 30,  // 화면 높이의 30%
     rightPercent: 6,    // 화면 오른쪽에서 6%
     leftPercent: 6,     // 화면 왼쪽에서 6%
