@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { mainLayout, typography, scale } from '../../utils/theme';
+import { layout, typography, pos } from '../../utils/theme';
 
 export default function SubTitle() {
     return (
@@ -8,7 +8,12 @@ export default function SubTitle() {
             <Text style={styles.title}>
                 Savor culture{"\n"}lightly,{"\n"}Remember{"\n"}deeply
             </Text>
-            <Text style={styles.description}>
+            <Text 
+                style={styles.description}
+                numberOfLines={1}
+                adjustsFontSizeToFit={true}
+                minimumFontScale={0.6}
+            >
                 A piece of culture you can't forget.
             </Text>
         </View>
@@ -18,19 +23,13 @@ export default function SubTitle() {
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        top: mainLayout.subtitle.startY,
-        right: mainLayout.subtitle.paddingRight,
-        width: '70%',
-        height: mainLayout.subtitle.height,
+        top: pos.y(layout.subtitle.topPercent),
+        left: pos.x(layout.subtitle.leftPercent),
+        right: pos.x(layout.subtitle.rightPercent),
+        height: pos.y(layout.subtitle.heightPercent),
         alignItems: 'flex-end',
+        justifyContent: 'flex-start',
     },
-    title: {
-        ...typography.subtitle,
-        textAlign: 'right',
-        marginBottom: scale(12),
-    },
-    description: {
-        ...typography.description,
-        textAlign: 'center',
-    },
+    title: typography.subtitle.multiLine,
+    description: typography.description,
 });
