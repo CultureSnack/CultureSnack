@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, View, StyleSheet } from 'react-native';
-import { designTokens } from '../../utils/theme';
+import { imageLayout } from '../../utils/theme';
 
 export default function DecorativeImage() {
     return (
@@ -26,17 +26,17 @@ export default function DecorativeImage() {
 const styles = StyleSheet.create({
     left: {
         position: 'absolute',
-        left: designTokens.layout.decorativeLeft.left,
-        top: designTokens.layout.decorativeLeft.top,
-        width: designTokens.layout.decorativeLeft.size,
-        height: designTokens.layout.decorativeLeft.size,
+        left: imageLayout.decorativeLeft.x,
+        top: imageLayout.decorativeLeft.y,
+        width: imageLayout.decorativeSize,
+        height: imageLayout.decorativeSize,
     },
     right: {
         position: 'absolute',
-        left: designTokens.layout.decorativeRight.left,
-        top: designTokens.layout.decorativeRight.top,
-        width: designTokens.layout.decorativeRight.size,
-        height: designTokens.layout.decorativeRight.size,
+        left: imageLayout.decorativeRight.x,
+        top: imageLayout.decorativeRight.y,
+        width: imageLayout.decorativeSize,
+        height: imageLayout.decorativeSize,
     },
     img: {
         width: '100%',

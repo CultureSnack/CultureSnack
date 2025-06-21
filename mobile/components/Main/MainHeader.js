@@ -1,22 +1,25 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { designTokens } from '../../utils/theme';
+import { mainLayout, typography } from '../../utils/theme';
 
 export default function MainHeader() {
     return (
-        <View style={styles.header}>
+        <View style={styles.container}>
             <Text style={styles.logo}>CultureSnack</Text>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    header: {
+    container: {
+        height: mainLayout.header.height,
         width: '100%',
+        justifyContent: 'center',
         alignItems: 'center',
-        marginTop: designTokens.spacing.headerTop,
+        paddingTop: mainLayout.header.paddingTop,
     },
     logo: {
-        ...designTokens.typography.logo,
+        ...typography.logo,
+        textAlign: 'center',
     },
 });
