@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { designTokens } from '../../utils/theme';
+import { mainLayout, typography, scale } from '../../utils/theme';
 
 export default function MainText() {
     return (
@@ -14,16 +14,14 @@ export default function MainText() {
 
 const styles = StyleSheet.create({
     container: {
+        height: mainLayout.mainText.height,
         width: '100%',
-        alignItems: 'flex-start',
-        marginBottom: designTokens.spacing.contentGap,
-        paddingLeft: designTokens.spacing.textLeft,
-        marginTop: designTokens.spacing.textMarginTop,
+        paddingLeft: mainLayout.mainText.paddingLeft,
+        paddingTop: mainLayout.mainText.paddingTop,
+        justifyContent: 'flex-start',
     },
     text: {
-        ...designTokens.typography.mainText,
-        marginBottom: designTokens.spacing.textMarginBottom,
-        flexWrap: 'wrap',
-        textAlign: 'left',
+        ...typography.mainText,
+        marginBottom: scale(2),
     },
 });
