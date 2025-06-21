@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { scale, verticalScale } from '../../utils/theme';
+import { designTokens } from '../../utils/theme';
 
 export default function MainText() {
     return (
@@ -16,18 +16,13 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         alignItems: 'flex-start',
-        marginBottom: verticalScale(40),
-        paddingLeft: scale(30),
-        marginTop: verticalScale(20),
+        marginBottom: designTokens.spacing.contentGap,
+        paddingLeft: designTokens.spacing.textLeft,
+        marginTop: designTokens.spacing.textMarginTop,
     },
     text: {
-        fontFamily: 'PlayfairDisplay-Regular',
-        fontSize: scale(18),
-        lineHeight: verticalScale(38),
-        letterSpacing: scale(0.3),
-        color: '#F0F0F0',
-        marginBottom: verticalScale(4),
-        fontWeight: '400',
+        ...designTokens.typography.mainText,
+        marginBottom: designTokens.spacing.textMarginBottom,
         flexWrap: 'wrap',
         textAlign: 'left',
     },

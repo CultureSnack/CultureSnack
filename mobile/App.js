@@ -1,8 +1,10 @@
+// App.js
 import React, { useState, useEffect } from 'react';
-import { View, Platform } from 'react-native';
+import { View, Platform, StatusBar } from 'react-native';
 import * as Font from 'expo-font';
-import Main from './pages/Main';
 import * as NavigationBar from 'expo-navigation-bar';
+import Main from './pages/Main';
+import { designTokens, debugScale } from './utils/theme';
 
 export default function App() {
     const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -19,21 +21,59 @@ export default function App() {
                 setFontsLoaded(true);
             } catch (error) {
                 console.error('Error loading fonts:', error);
+                setFontsLoaded(true); // 폰트 로딩 실패해도 앱 실행
             }
         }
-        loadFonts();
+        
+        async function setupPlatformUI() {
+            // 안드로이드 네비게이션 바 설정
+            if (Platform.OS === 'android') {
+                try {
+                    await NavigationBar.setBackgroundColorAsync(designTokens.colors.background);
+                    await NavigationBar.setButtonStyleAsync('light');
+                    
+                    // 풀스크린 몰입형 경험을 원한다면 아래 주석 해제
+                    // await NavigationBar.setVisibilityAsync('hidden');
+                } catch (error) {
+                    console.log('Navigation bar setup failed:', error);
+                }
+            }
+            
+            // iOS 상태 바 설정
+            if (Platform.OS === 'ios') {
+                StatusBar.setBarStyle('light-content', true);
+            }
+        }
 
-        // 안드로이드 하단 네비게이션 바 배경색/버튼 스타일 설정
-        if (Platform.OS === 'android') {
-            NavigationBar.setBackgroundColorAsync('#0D1B2A');
-            NavigationBar.setButtonStyleAsync('light');
-            NavigationBar.setVisibilityAsync('immersive'); // 완전 투명/풀스크린 원할 때 주석 해제
+        loadFonts();
+        setupPlatformUI();
+        
+        // 개발 중 디버그 정보 출력 (배포 시 제거)
+        if (__DEV__) {
+            debugScale();
         }
     }, []);
 
+    // 폰트 로딩 중 화면
     if (!fontsLoaded) {
-        return <View />;
+        return (
+            <View style={{
+                flex: 1,
+                backgroundColor: designTokens.colors.background,
+                justifyContent: 'center',
+                alignItems: 'center',
+            }} />
+        );
     }
 
-    return <Main />;
-} 
+    return (
+        <View style={{ flex: 1 }}>
+            <StatusBar 
+                barStyle="light-content" 
+                backgroundColor={designTokens.colors.background}
+                translucent={false}
+            />
+            <Main />
+        </View>
+    );
+}
