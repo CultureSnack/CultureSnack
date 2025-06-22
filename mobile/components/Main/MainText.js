@@ -11,7 +11,7 @@ export default function MainText() {
                 adjustsFontSizeToFit={true}
                 minimumFontScale={0.7}
             >
-                Culture, reimagined in the language of Gen Z.
+                Z세대의 언어로 다시 쓰는 문화
             </Text>
             <Text 
                 style={styles.line2}
@@ -19,7 +19,7 @@ export default function MainText() {
                 adjustsFontSizeToFit={true}
                 minimumFontScale={0.7}
             >
-                Less jargon, more clarity.
+                어려운 말은 줄이고, 이해는 빠르게
             </Text>
             <Text 
                 style={styles.line3}
@@ -27,7 +27,7 @@ export default function MainText() {
                 adjustsFontSizeToFit={true}
                 minimumFontScale={0.7}
             >
-                AI reads it. We tell it simply.
+                AI가 읽고, 쉽게 들려주는 이야기
             </Text>
         </View>
     );

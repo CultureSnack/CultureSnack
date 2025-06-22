@@ -84,8 +84,8 @@ export const layout = {
   
   image: {
     centerXPercent: 50, // 화면 가로 중앙
-    centerYPercent: 42, // 화면 세로 42% 지점
-    sizePercent: 55,    // 화면 너비의 55%
+    centerYPercent:49, // 화면 세로 42% 지점
+    sizePercent: 70,    // 화면 너비의 55%
   },
   
   subtitle: {
@@ -149,7 +149,7 @@ export const typography = {
       letterSpacing: w(1.2),
       lineHeight: h(38),
       textAlign: 'right',
-      marginTop: h(-90),
+      marginTop: h(-150),
     },
   },
   
@@ -162,6 +162,65 @@ export const typography = {
     lineHeight: h(20),
     textAlign: 'center',
     marginTop: h(12),
+  },
+  
+  // 목차 페이지
+  tableOfContents: {
+    verticalTitle: {
+      fontSize: SCREEN_WIDTH * 0.1,
+      fontFamily: theme.fonts.bold,
+      color: theme.colors.primary,
+      letterSpacing: w(1),
+    },
+    itemTitle: {
+      fontSize: SCREEN_WIDTH * 0.04,
+      fontFamily: theme.fonts.bold,
+      color: '#F7E7CE',
+      lineHeight: SCREEN_WIDTH * 0.08,
+      textAlign: 'left',
+    },
+    itemDescription: {
+      fontSize: SCREEN_WIDTH * 0.035,
+      fontFamily: theme.fonts.regular,
+      color: theme.colors.text,
+      lineHeight: SCREEN_WIDTH * 0.045,
+      opacity: 1,
+    },
+    comingSoon: {
+      fontSize: SCREEN_WIDTH * 0.03,
+      fontFamily: theme.fonts.bold,
+      color: theme.colors.primary,
+      lineHeight: SCREEN_WIDTH * 0.04,
+    },
+  },
+  
+  // 브리프 페이지
+  brief: {
+    navText: {
+      fontSize: SCREEN_WIDTH * 0.045,
+      fontFamily: theme.fonts.bold,
+      color: theme.colors.primary,
+    },
+    description: {
+      fontSize: SCREEN_WIDTH * 0.04,
+      fontFamily: theme.fonts.regular,
+      color: theme.colors.text,
+      lineHeight: SCREEN_WIDTH * 0.05,
+      textAlign: 'center',
+    },
+    brandTitle: {
+      fontSize: SCREEN_WIDTH * 0.12,
+      fontFamily: theme.fonts.bold,
+      color: theme.colors.primary,
+      letterSpacing: 2,
+      textAlign: 'center',
+    },
+    inputPrompt: {
+      fontSize: SCREEN_WIDTH * 0.045,
+      fontFamily: theme.fonts.regular,
+      color: theme.colors.text,
+      textAlign: 'center',
+    },
   },
 };
 
