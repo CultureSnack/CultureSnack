@@ -1,6 +1,8 @@
 import React from 'react';
-import { Image, View, StyleSheet } from 'react-native';
-import { images } from '../../utils/theme';
+import { Image, View, StyleSheet, Text, Dimensions } from 'react-native';
+import { images, theme } from '../../utils/theme';
+
+const { height: screenHeight, width: screenWidth } = Dimensions.get('window');
 
 export default function DecorativeImage() {
     return (
@@ -18,6 +20,11 @@ export default function DecorativeImage() {
                     style={styles.img}
                     resizeMode="contain"
                 />
+            </View>
+            
+            {/* 하단 화살표 */}
+            <View style={styles.bottomDecoration}>
+                <Text style={styles.arrow}>↓</Text>
             </View>
         </>
     );
@@ -41,5 +48,19 @@ const styles = StyleSheet.create({
     img: {
         width: '100%',
         height: '100%',
+    },
+    bottomDecoration: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: screenHeight * 0.15,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    arrow: {
+        fontSize: 24,
+        color: theme.colors.primary,
+        fontWeight: 'bold',
     },
 });
