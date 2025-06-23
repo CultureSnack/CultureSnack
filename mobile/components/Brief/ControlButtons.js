@@ -6,6 +6,7 @@ const { width: screenWidth } = Dimensions.get('window');
 
 const ControlButtons = ({ 
     isListening, 
+    loading,
     handleMicPress, 
     handleKeyboardPress,
     showInput 

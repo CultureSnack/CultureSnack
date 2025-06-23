@@ -4,9 +4,9 @@ import { theme } from '../../utils/theme';
 
 const { width: screenWidth } = Dimensions.get('window');
 
-const MainContent = ({ showInput, isFirstTime, inputText, convertedText }) => {
+const MainContent = ({ showInput, inputText, result }) => {
     // 메인 콘텐츠 표시 조건: 입력도 결과도 없을 때
-    const shouldShowMainContent = !inputText && !convertedText;
+    const shouldShowMainContent = !inputText && !result;
     
     return (
         <>
