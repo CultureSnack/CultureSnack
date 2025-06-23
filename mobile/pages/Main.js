@@ -1,7 +1,7 @@
-import React, { useRef } from 'react';
 import { View, StyleSheet, StatusBar, ScrollView, Dimensions } from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { theme, debugInfo } from '../utils/theme';
-import { useNavigation } from '@react-navigation/native';
 import MainHeader from '../components/Main/MainHeader';
 import MainText from '../components/Main/MainText';
 import MainImage from '../components/Main/MainImage';
@@ -19,6 +19,7 @@ if (__DEV__) {
 const Main = () => {
     const scrollViewRef = useRef(null);
     const navigation = useNavigation();
+    const route = useRoute();
 
     // 특정 섹션으로 스크롤 이동
     const scrollToSection = (sectionIndex) => {
@@ -29,6 +30,17 @@ const Main = () => {
             });
         }
     };
+
+    // route params에서 scrollToSection이 있으면 자동으로 스크롤
+    useEffect(() => {
+        if (route.params?.scrollToSection !== undefined) {
+            console.log('📱 자동 스크롤 요청:', route.params.scrollToSection);
+            // 컴포넌트가 완전히 마운트된 후 스크롤
+            setTimeout(() => {
+                scrollToSection(route.params.scrollToSection);
+            }, 100);
+        }
+    }, [route.params]);
 
     return (
         <View style={styles.container}>
