@@ -1,60 +1,214 @@
 import React from 'react';
-import { View, Text, Image, ScrollView, StyleSheet, Dimensions, StatusBar } from 'react-native';
+import { View, Text, Image, ScrollView, StyleSheet, Dimensions, StatusBar, TouchableOpacity, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { theme, typography } from '../utils/theme';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const CultureManual = () => {
+  const navigation = useNavigation();
+
+  const handleBackToMain = () => {
+    console.log('🔄 로고 클릭 - 메인으로 이동');
+    console.log('Navigation 객체:', navigation);
+
+    if (navigation) {
+      console.log('✅ Navigation 존재 - 메인으로 이동');
+      try {
+        // 메인 페이지의 첫 번째 섹션(0번 인덱스)으로 이동
+        navigation.navigate('index', { scrollToSection: 0 });
+        console.log('📱 index 페이지 메인 섹션으로 이동');
+      } catch (error) {
+        console.error('❌ Navigation 에러:', error);
+        Alert.alert('에러', '메인 화면으로 이동하는 중 오류가 발생했습니다.');
+      }
+    } else {
+      console.log('❌ Navigation이 없음');
+      Alert.alert('알림', 'Navigation이 설정되지 않았습니다.');
+    }
+  };
+
+  const handleGoToBrief = () => {
+    console.log('🔄 브리프로 이동 버튼 클릭');
+    console.log('Navigation 객체:', navigation);
+
+    if (navigation) {
+      console.log('✅ Navigation 존재 - 브리프로 이동');
+      try {
+        // 브리프 섹션(2번 인덱스)으로 이동
+        navigation.navigate('index', { scrollToSection: 2 });
+        console.log('📱 index 페이지 브리프 섹션으로 이동');
+      } catch (error) {
+        console.error('❌ Navigation 에러:', error);
+        Alert.alert('에러', '브리프 화면으로 이동하는 중 오류가 발생했습니다.');
+      }
+    } else {
+      console.log('❌ Navigation이 없음');
+      Alert.alert('알림', 'Navigation이 설정되지 않았습니다.');
+    }
+  };
+
+  // 강제로 메인으로 이동하는 함수
+  const forceNavigateToMain = () => {
+    try {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'index' }],
+      });
+    } catch (error) {
+      console.error('강제 이동 실패:', error);
+    }
+  };
+
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="#0d1b2a" />
 
       <ScrollView style={styles.scrollContainer} contentContainerStyle={{ ...styles.container, minHeight: screenHeight }}>
         {/* 로고 & 상단바 */}
-        <View style={styles.navBar}>
+        <TouchableOpacity style={styles.navBar} onPress={handleBackToMain} activeOpacity={0.7}>
           <Image source={require('../assets/logo.png')} style={styles.logo} />
-          <Text style={styles.logoText}>(내 문화 취향 찾기)</Text>
-        </View>
+        </TouchableOpacity>
 
         {/* 메인 안내 */}
-        
-        <Image source={require('../assets/guide1.png')} style={styles.guideMainImage} />
-        <Text style={styles.guideText1}>문화재, 문화유산</Text>
-        <Text style={styles.guideText2}>설명이 너무 어렵다면?</Text>
-        <Text style={styles.guideText3}>AI가 쉬운 말로 변환해줘요.</Text>
+        <View style={styles.mainGuideContainer}>
+          <Image source={require('../assets/guide1.png')} style={styles.guideMainImage} />
+          <View style={styles.textOverlay}>
+            <Text style={styles.guideText1}>문화재, 문화유산</Text>
+            <Text 
+              style={styles.guideText2}
+              numberOfLines={1}
+              adjustsFontSizeToFit={true}
+              minimumFontScale={0.7}
+            >
+              설명이 너무 어렵다면?
+            </Text>
+            <Text style={styles.guideText3}>AI가 쉬운 말로 변환해줘요.</Text>
+          </View>
+        </View>
 
         {/* 기능 아이콘 영역 */}
         <View style={styles.iconRow}>
           <View style={styles.iconBlock}>
             <Image source={require('../assets/guide-main.png')} style={styles.icon} />
-            <Text style={styles.iconText}>말하면{'\n'}입력하면</Text>
+            <View style={styles.iconTextOverlay}>
+              <Text 
+                style={styles.iconText}
+                numberOfLines={2}
+                adjustsFontSizeToFit={true}
+                minimumFontScale={0.7}
+              >
+                말하면{'\n'}입력하면
+              </Text>
+            </View>
           </View>
           <View style={styles.iconBlock}>
             <Image source={require('../assets/guide-main.png')} style={styles.icon} />
-            <Text style={styles.iconText}>AI가 변환</Text>
+            <View style={styles.iconTextOverlay}>
+              <Text 
+                style={styles.iconText}
+                numberOfLines={1}
+                adjustsFontSizeToFit={true}
+                minimumFontScale={0.7}
+              >
+                AI가 변환
+              </Text>
+            </View>
           </View>
           <View style={styles.iconBlock}>
             <Image source={require('../assets/guide-main.png')} style={styles.icon} />
-            <Text style={styles.iconText}>듣기 기능까지</Text>
+            <View style={styles.iconTextOverlay}>
+              <Text 
+                style={styles.iconText}
+                numberOfLines={1}
+                adjustsFontSizeToFit={true}
+                minimumFontScale={0.7}
+              >
+                듣기 기능까지
+              </Text>
+            </View>
           </View>
         </View>
 
         {/* 예시 대화 */}
         <View style={styles.chatBlock}>
-          <View>
-            <Image source={require('../assets/guide-chat.png')} style={styles.chat} />
-            <Text style={styles.chatText}>근정전은 조선시대{'\n'}왕의 공식 행사 장소였다.</Text>
+          <View style={styles.rightChat}>
+            <View style={styles.chatContainer}>
+              <Image source={require('../assets/guide-chat.png')} style={styles.chat} />
+              <View style={[styles.chatTextOverlay, styles.rightTextOverlay]}>
+                <Text 
+                  style={[styles.chatText, styles.rightChatText]}
+                  numberOfLines={3}
+                  adjustsFontSizeToFit={true}
+                  minimumFontScale={0.7}
+                >
+                  근정전은 조선시대{'\n'}왕의 공식 행사 장소였다.
+                </Text>
+              </View>
+            </View>
           </View>
-          <View>
-            <Image source={require('../assets/guide-chat.png')} style={styles.chat} />
-            <Text style={styles.chatText}>조선시대 왕이{'\n'}공식 행사를 치르던 장소예요.</Text>
+          <View style={styles.leftChat}>
+            <View style={styles.chatContainer}>
+              <Image source={require('../assets/guide-chat.png')} style={[styles.chat, styles.mirrorChat]} />
+              <View style={[styles.chatTextOverlay, styles.leftTextOverlay]}>
+                <Text 
+                  style={[styles.chatText, styles.leftChatText]}
+                  numberOfLines={3}
+                  adjustsFontSizeToFit={true}
+                  minimumFontScale={0.7}
+                >
+                  조선시대 왕이{'\n'}공식 행사를 치르던 장소예요.
+                </Text>
+              </View>
+            </View>
           </View>
         </View>
 
         {/* 하단 안내문 */}
-        <Text style={styles.mainText}>“말하거나 입력해요”</Text>
-        <Text style={styles.bottomText1}>“쉬운 말로 변환된 문장 바로 확인해요”</Text>
-        <Text style={styles.bottomText2}>“눈이 피곤하다면 귀로 들어보세요”</Text>
-        <Text style={styles.bottomText3}>지금 바로 시작해보세요</Text>
+        <Text style={styles.mainText}>"말하거나 입력해요"</Text>
+        <Text style={styles.bottomText1}>"쉬운 말로 변환된 문장 바로 확인해요"</Text>
+        <Text style={styles.bottomText2}>"눈이 피곤하다면 귀로 들어보세요"</Text>
+
+        {/* 브리프 이동동 버튼 */}
+        <TouchableOpacity style={styles.backButton} onPress={handleGoToBrief} activeOpacity={0.8}>
+          <Text style={styles.bottomText3}>지금 바로 시작해보세요</Text>
+        </TouchableOpacity>
+
+        {/* 상단 왼쪽 장식 (뒤집힌) */}
+        <View style={styles.topLeftDecoration}>
+          <Image 
+            source={require('../assets/decorative-1.png')} 
+            style={styles.topDecorativeImage}
+            resizeMode="contain"
+          />
+        </View>
+
+        {/* 상단 오른쪽 장식 (뒤집힌) */}
+        <View style={styles.topRightDecoration}>
+          <Image 
+            source={require('../assets/decorative-2.png')} 
+            style={styles.topDecorativeImage}
+            resizeMode="contain"
+          />
+        </View>
+
+        {/* 하단 왼쪽 장식 */}
+        <View style={styles.bottomLeftDecoration}>
+          <Image 
+            source={require('../assets/decorative-1.png')} 
+            style={styles.bottomDecorativeImage}
+            resizeMode="contain"
+          />
+        </View>
+
+        {/* 하단 오른쪽 장식 */}
+        <View style={styles.bottomRightDecoration}>
+          <Image 
+            source={require('../assets/decorative-2.png')} 
+            style={styles.bottomDecorativeImage}
+            resizeMode="contain"
+          />
+        </View>
       </ScrollView>
     </>
   );
@@ -65,106 +219,159 @@ export default CultureManual;
 const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
-    backgroundColor: '#0d1b2a',
+    backgroundColor: theme.colors.background,
   },
   container: {
     alignItems: 'center',
     paddingVertical: 40,
-    backgroundColor: '#0d1b2a',
+    backgroundColor: theme.colors.background,
   },
   navBar: {
     alignItems: 'center',
     marginBottom: 20,
+    padding: 10,
+    marginTop: -30,
   },
   logo: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-  },
-  logoText: {
-    color: '#f0f0f0',
-    fontSize: 12,
-    marginTop: 6,
+    ...typography.manual.logo,
   },
   mainText: {
-    color: '#f7e7ce',
-    fontSize: 18,
+    ...typography.manual.bottomText.main,
+  },
+  mainGuideContainer: {
+    alignItems: 'center',
     marginBottom: 30,
+    position: 'relative',
   },
   guideMainImage: {
-    width: screenWidth * 0.8,
-    height: screenWidth * 0.8,
+    ...typography.manual.mainGuide.image,
     resizeMode: 'contain',
-    marginBottom: 20,
+  },
+  textOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: typography.manual.mainGuide.textOverlay.left,
+    right: typography.manual.mainGuide.textOverlay.right,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   guideText1: {
-    color: '#f7e7ce',
-    fontSize: 16,
-    marginTop: 8,
+    ...typography.manual.mainGuide.text1,
   },
   guideText2: {
-    color: '#f7e7ce',
-    fontSize: 16,
-    marginTop: 4,
+    ...typography.manual.mainGuide.text2,
   },
   guideText3: {
-    color: '#f7e7ce',
-    fontSize: 16,
-    marginTop: 8,
-    marginBottom: 30,
+    ...typography.manual.mainGuide.text3,
   },
   iconRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    width: '90%',
-    marginBottom: 30,
+    ...typography.manual.icons.row,
   },
   iconBlock: {
     alignItems: 'center',
-    width: '30%',
+    ...typography.manual.icons.block,
+    position: 'relative',
   },
   icon: {
-    width: 80,
-    height: 80,
-    marginBottom: 6,
+    ...typography.manual.icons.image,
+  },
+  iconTextOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    ...typography.manual.icons.overlay,
   },
   iconText: {
-    color: '#f7e7ce',
-    fontSize: 14,
-    textAlign: 'center',
+    ...typography.manual.icons.text,
   },
   chatBlock: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '90%',
-    marginBottom: 30,
+    ...typography.manual.chat.block,
+  },
+  rightChat: {
+    alignItems: 'flex-end',
+    ...typography.manual.chat.rightContainer,
+  },
+  leftChat: {
+    alignItems: 'flex-start',
+    ...typography.manual.chat.leftContainer,
+  },
+  chatContainer: {
+    position: 'relative',
   },
   chat: {
-    width: screenWidth * 0.4,
-    height: screenWidth * 0.4,
+    ...typography.manual.chat.image,
     resizeMode: 'contain',
   },
+  chatTextOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    ...typography.manual.chat.textOverlay,
+  },
   chatText: {
-    color: '#f7e7ce',
-    fontSize: 12,
-    marginTop: 8,
-    textAlign: 'center',
+    ...typography.manual.chat.text,
   },
   bottomText1: {
-    color: '#f7e7ce',
-    fontSize: 16,
-    marginTop: 20,
+    ...typography.manual.bottomText.text1,
   },
   bottomText2: {
-    color: '#f7e7ce',
-    fontSize: 16,
-    marginTop: 10,
+    ...typography.manual.bottomText.text2,
+  },
+  backButton: {
+    ...typography.manual.button,
   },
   bottomText3: {
-    color: '#daa520',
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginTop: 30,
-    marginBottom: 40,
+    ...typography.manual.button.text,
+  },
+  mirrorChat: {
+    transform: [{ scaleX: -1 }],
+  },
+  rightChatText: {
+    textAlign: 'center',
+  },
+  leftChatText: {
+    textAlign: 'center',
+  },
+  rightTextOverlay: {
+    ...typography.manual.chat.rightOverlay,
+  },
+  leftTextOverlay: {
+    ...typography.manual.chat.leftOverlay,
+  },
+  topLeftDecoration: {
+    position: 'absolute',
+    ...typography.manual.decoration.topLeft,
+  },
+  topRightDecoration: {
+    position: 'absolute',
+    ...typography.manual.decoration.topRight,
+  },
+  topDecorativeImage: {
+    width: '100%',
+    height: '100%',
+    transform: [{ scaleY: -1 }],
+  },
+  bottomLeftDecoration: {
+    position: 'absolute',
+    ...typography.manual.decoration.bottomLeft,
+  },
+  bottomRightDecoration: {
+    position: 'absolute',
+    ...typography.manual.decoration.bottomRight,
+  },
+  bottomDecorativeImage: {
+    width: '100%',
+    height: '100%',
   },
 });
