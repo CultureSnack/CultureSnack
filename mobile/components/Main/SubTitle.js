@@ -14,7 +14,7 @@ export default function SubTitle() {
             문화를 가볍게 즐기고, 깊이 기억하세요.
             </Text>
             <Text 
-                style={styles.description}
+                style={[styles.description, { color: '#F7E7CE' }]}
                 numberOfLines={1}
                 adjustsFontSizeToFit={true}
                 minimumFontScale={0.6}
@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
         fontSize: typography.subtitle.multiLine.fontSize * 0.8,
         lineHeight: typography.subtitle.multiLine.lineHeight * 0.8,
         textAlign: 'center',
+        fontFamily: 'PlayfairDisplay-Bold', // 굵은 폰트 패밀리 사용
     },
     description: typography.description,
 });
