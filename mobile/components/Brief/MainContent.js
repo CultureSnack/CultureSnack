@@ -61,4 +61,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default MainContent; 
+export default MainContent;

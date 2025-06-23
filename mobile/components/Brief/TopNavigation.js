@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
         height: 80,
         justifyContent: 'center',
         alignItems: 'center',
-        marginLeft: 5,
+        marginLeft: 1,
         marginRight: 15,
     },
     rightSection: {
