@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     },
     leftTitle: {
         position: 'absolute',
-        left: -120,
+        left: -107,
         top: '40%',
         transform: [{ translateY: -100 }, { rotate: '90deg' }],
         zIndex: 10,

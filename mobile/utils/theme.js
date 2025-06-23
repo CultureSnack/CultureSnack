@@ -194,31 +194,43 @@ export const typography = {
     },
   },
   
-  // 브리프 페이지
+  // 브리프 페이지 (CSS 디자인 기준)
   brief: {
-    navText: {
-      fontSize: SCREEN_WIDTH * 0.045,
-      fontFamily: theme.fonts.bold,
+    // 네비게이션 (상단 62px 높이)
+    navTitle: {
+      fontSize: smartFont(15, "Pick Your Snack", SCREEN_WIDTH * 0.28), // CSS: 15px
+      fontFamily: theme.fonts.semibold, // CSS: font-weight: 600
       color: theme.colors.primary,
+      lineHeight: w(18), // CSS: line-height: 120%
     },
+    navDescription: {
+      fontSize: smartFont(10, "컬처스넥 사용 가이드북", SCREEN_WIDTH * 0.25), // CSS: 10px
+      fontFamily: theme.fonts.regular, // CSS: font-weight: 400
+      color: theme.colors.text,
+      lineHeight: w(15), // CSS: line-height: 150%
+    },
+    // 메인 설명 텍스트
     description: {
-      fontSize: SCREEN_WIDTH * 0.04,
+      fontSize: smartFont(13, "문화 관련 설명이 어렵다면 AI가 요약하고 쉬운말로 바꿔드릴게요.", SCREEN_WIDTH * 0.88), // CSS: 13px
       fontFamily: theme.fonts.regular,
-      color: theme.colors.text,
-      lineHeight: SCREEN_WIDTH * 0.05,
+      color: '#F7E7CE', // CSS 색상
+      lineHeight: w(22), // CSS: line-height: 170%
       textAlign: 'center',
     },
+    // 브랜드 타이틀
     brandTitle: {
-      fontSize: SCREEN_WIDTH * 0.12,
-      fontFamily: theme.fonts.bold,
+      fontSize: smartFont(56, "CultureSnack", SCREEN_WIDTH * 0.89), // CSS: 56px
+      fontFamily: theme.fonts.semibold, // CSS: font-weight: 600
       color: theme.colors.primary,
-      letterSpacing: 2,
-      textAlign: 'center',
+      lineHeight: w(67), // CSS: line-height: 120%
+      textAlign: 'left',
     },
+    // 입력 프롬프트
     inputPrompt: {
-      fontSize: SCREEN_WIDTH * 0.045,
+      fontSize: smartFont(12, "말하거나 입력도 가능해요", SCREEN_WIDTH * 0.32), // CSS: 12px
       fontFamily: theme.fonts.regular,
-      color: theme.colors.text,
+      color: '#F7E7CE', // CSS 색상
+      lineHeight: w(20), // CSS: line-height: 170%
       textAlign: 'center',
     },
   },
