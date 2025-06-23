@@ -1,10 +1,15 @@
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image } from 'react-native';
 import { theme, typography } from '../../utils/theme';
+import { useRouter } from 'expo-router';
+
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('window');
 
 const TableOfContents = ({ scrollToSection }) => {
+    const router = useRouter();
+
     return (
         <View style={styles.container}>
             {/* 왼쪽 세로 타이틀 */}
@@ -51,7 +56,7 @@ const TableOfContents = ({ scrollToSection }) => {
                 {/* 컬처스낵 사용 설명서 */}
                 <TouchableOpacity 
                     style={[styles.contentItem, styles.disabledItem]}
-                    onPress={() => {}}
+                    onPress={() => router.push('/Culturesnack_Manual_Ui')}
                 >
                     <Text style={styles.itemTitle}>컬처스낵 사용 설명서{'\n'}(Snack Guide)</Text>
                     <Text style={styles.itemDescription}>처음이라면? 먼저 확인!</Text>

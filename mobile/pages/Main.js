@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { View, StyleSheet, StatusBar, ScrollView, Dimensions } from 'react-native';
 import { theme, debugInfo } from '../utils/theme';
+import { useNavigation } from '@react-navigation/native';
 import MainHeader from '../components/Main/MainHeader';
 import MainText from '../components/Main/MainText';
 import MainImage from '../components/Main/MainImage';
@@ -8,8 +9,6 @@ import SubTitle from '../components/Main/SubTitle';
 import DecorativeImage from '../components/Main/DecorativeImage';
 import TableOfContents from '../components/TableOfContents/TableOfContents';
 import Brief from '../components/Brief/Brief';
-
-// 화면 크기 가져오기
 const { height: screenHeight, width: screenWidth } = Dimensions.get('window');
 
 // 개발 중 디버그 정보 출력
@@ -19,6 +18,7 @@ if (__DEV__) {
 
 const Main = () => {
     const scrollViewRef = useRef(null);
+    const navigation = useNavigation();
 
     // 특정 섹션으로 스크롤 이동
     const scrollToSection = (sectionIndex) => {
@@ -58,12 +58,12 @@ const Main = () => {
 
                 {/* 두 번째 화면 - 목차 */}
                 <View style={styles.screen}>
-                    <TableOfContents scrollToSection={scrollToSection} />
+                    <TableOfContents scrollToSection={scrollToSection} navigation={navigation} />
                 </View>
 
                 {/* 세 번째 화면 - Brief */}
                 <View style={styles.screen}>
-                    <Brief scrollToSection={scrollToSection} />
+                    <Brief scrollToSection={scrollToSection} navigation={navigation} />
                 </View>
             </ScrollView>
         </View>
