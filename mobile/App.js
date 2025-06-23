@@ -4,7 +4,12 @@ import { View, Platform, StatusBar } from 'react-native';
 import * as Font from 'expo-font';
 import * as NavigationBar from 'expo-navigation-bar';
 import Main from './pages/Main';
+import CultureManual from './app/Culturesnack_Manual_Ui';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { theme, debugInfo } from './utils/theme';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
     const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -64,14 +69,17 @@ export default function App() {
     }
 
     return (
-        <View style={{ flex: 1 }}>
+        <NavigationContainer>
             <StatusBar
                 barStyle="light-content"
                 backgroundColor={theme.colors.background}
                 translucent={false}
             />
-            <Main />
-        </View>
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="Main" component={Main} />
+                <Stack.Screen name="CultureManual" component={CultureManual} />
+            </Stack.Navigator>
+        </NavigationContainer>
     );
 }
 
