@@ -1,12 +1,34 @@
 import React from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import { layout, typography, pos } from '../../utils/theme';
 
 export default function MainText() {
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Culture, reimagined in the language of Gen Z.</Text>
-            <Text style={[styles.text, { top: 18, width: 136 }]}>Less jargon, more clarity.</Text>
-            <Text style={[styles.text, { top: 36, width: 149 }]}>AI reads it. We tell it simply.</Text>
+            <Text 
+                style={styles.line1}
+                numberOfLines={1}
+                adjustsFontSizeToFit={true}
+                minimumFontScale={0.7}
+            >
+                Z세대의 언어로 다시 쓰는 문화
+            </Text>
+            <Text 
+                style={styles.line2}
+                numberOfLines={1}
+                adjustsFontSizeToFit={true}
+                minimumFontScale={0.7}
+            >
+                어려운 말은 줄이고, 이해는 빠르게
+            </Text>
+            <Text 
+                style={styles.line3}
+                numberOfLines={1}
+                adjustsFontSizeToFit={true}
+                minimumFontScale={0.7}
+            >
+                AI가 읽고, 쉽게 들려주는 이야기
+            </Text>
         </View>
     );
 }
@@ -14,23 +36,22 @@ export default function MainText() {
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        left: 31,
-        top: 116,
-        width: 245,
-        height: 54,
+        top: pos.y(layout.mainText.topPercent),
+        left: pos.x(layout.mainText.leftPercent),
+        right: pos.x(layout.mainText.rightPercent),
+        height: pos.y(layout.mainText.heightPercent),
+        justifyContent: 'flex-start',
     },
-    text: {
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        width: 245,
-        height: 18,
-        color: '#F0F0F0',
-        fontFamily: Platform.OS === 'ios' ? 'Playfair Display' : 'PlayfairDisplay-Regular',
-        fontSize: 12,
-        fontWeight: '400',
-        lineHeight: 18,
-        textAlign: 'left',
-        letterSpacing: 0.2,
+    line1: {
+        ...typography.mainText.line1,
+        marginBottom: pos.y(0.5),
+    },
+    line2: {
+        ...typography.mainText.line2,
+        marginBottom: pos.y(0.5),
+    },
+    line3: {
+        ...typography.mainText.line3,
+        marginBottom: pos.y(0.5),
     },
 });

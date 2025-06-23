@@ -1,11 +1,26 @@
 import React from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import { layout, typography, pos } from '../../utils/theme';
 
 export default function SubTitle() {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Savor culture lightly,{"\n"}Remember{"\n"} deeply</Text>
-            <Text style={styles.desc}>A piece of culture you can't forget.</Text>
+            <Text 
+                style={styles.title}
+                numberOfLines={1}
+                adjustsFontSizeToFit={true}
+                minimumFontScale={0.7}
+            >
+            문화를 가볍게 즐기고, 깊이 기억하세요.
+            </Text>
+            <Text 
+                style={[styles.description, { color: '#F7E7CE' }]}
+                numberOfLines={1}
+                adjustsFontSizeToFit={true}
+                minimumFontScale={0.6}
+            >
+                자꾸 생각나는 문화 한 조각
+            </Text>
         </View>
     );
 }
@@ -13,37 +28,19 @@ export default function SubTitle() {
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        left: 124,
-        top: 445,
-        width: 245,
-        height: 189,
+        top: pos.y(layout.subtitle.topPercent),
+        left: pos.x(layout.subtitle.leftPercent),
+        right: pos.x(layout.subtitle.rightPercent),
+        height: pos.y(layout.subtitle.heightPercent),
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     title: {
-        position: 'absolute',
-        left: 15,
-        top: 0,
-        width: 223,
-        height: 177,
-        color: '#F0F0F0',
-        fontFamily: Platform.OS === 'ios' ? 'Playfair Display' : 'PlayfairDisplay-Bold',
-        fontWeight: '700',
-        fontSize: 32,
-        lineHeight: 42,
-        textAlign: 'right',
-        letterSpacing: 0.5,
+        ...typography.subtitle.multiLine,
+        fontSize: typography.subtitle.multiLine.fontSize * 0.8,
+        lineHeight: typography.subtitle.multiLine.lineHeight * 0.8,
+        textAlign: 'center',
+        fontFamily: 'PlayfairDisplay-Bold', // 굵은 폰트 패밀리 사용
     },
-    desc: {
-        position: 'absolute',
-        left: 0,
-        top: 170,
-        width: 245,
-        height: 24,
-        color: '#F0F0F0',
-        fontFamily: Platform.OS === 'ios' ? 'Playfair Display' : 'PlayfairDisplay-Regular',
-        fontWeight: '400',
-        fontSize: 16,
-        lineHeight: 24,
-        textAlign: 'right',
-        letterSpacing: 0.3,
-    },
+    description: typography.description,
 });
