@@ -1,19 +1,38 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { View, StyleSheet, Dimensions, Animated, TouchableWithoutFeedback } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import { theme } from '../../utils/theme';
 import TopNavigation from './TopNavigation';
 import MainContent from './MainContent';
 import InputSection from './InputSection';
 import ControlButtons from './ControlButtons';
+import {
+    setInputText,
+    setShowInput,
+    setIsListening,
+    requestExplainText,
+    requestExplainAudio,
+    clearResult,
+    selectInputText,
+    selectResult,
+    selectLoading,
+    selectError,
+    selectShowInput,
+    selectIsListening
+} from '../../store/modules/explainModule';
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('window');
 
 const Brief = ({ scrollToSection }) => {
-    const [inputText, setInputText] = useState('');
-    const [isListening, setIsListening] = useState(false);
-    const [showInput, setShowInput] = useState(false);
-    const [convertedText, setConvertedText] = useState('');
-    const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+    const dispatch = useDispatch();
+    
+    // Redux 상태
+    const inputText = useSelector(selectInputText);
+    const result = useSelector(selectResult);
+    const loading = useSelector(selectLoading);
+    const error = useSelector(selectError);
+    const showInput = useSelector(selectShowInput);
+    const isListening = useSelector(selectIsListening);
     
     const fadeAnim = useRef(new Animated.Value(1)).current;
     const inputRef = useRef(null);
@@ -21,7 +40,7 @@ const Brief = ({ scrollToSection }) => {
     const handleMicPress = async () => {
         if (!isListening) {
             // 음성 인식 시작
-            setIsListening(true);
+            dispatch(setIsListening(true));
             
             try {
                 // 실제 음성 인식 구현 (Web Speech API 사용)
@@ -35,43 +54,41 @@ const Brief = ({ scrollToSection }) => {
                     
                     recognition.onresult = (event) => {
                         const transcript = event.results[0][0].transcript;
-                        setInputText(transcript);
-                        setShowInput(true); // 음성 입력 시에도 입력 화면 표시
-                        setIsListening(false);
+                        dispatch(setInputText(transcript));
+                        dispatch(setShowInput(true)); // 음성 입력 시에도 입력 화면 표시
+                        dispatch(setIsListening(false));
                         handleConvert(transcript);
                     };
                     
                     recognition.onerror = (event) => {
                         console.error('음성 인식 오류:', event.error);
-                        setIsListening(false);
+                        dispatch(setIsListening(false));
                         // 오류 시 메인 콘텐츠 복원
-                        setIsListening(false);
-                        setShowInput(false);
+                        dispatch(setShowInput(false));
                     };
                     
                     recognition.onend = () => {
-                        setIsListening(false);
+                        dispatch(setIsListening(false));
                     };
                     
                     recognition.start();
                 } else {
                     // Web Speech API 미지원 시 메인 콘텐츠 복원
-                    setIsListening(false);
-                    setShowInput(false);
+                    dispatch(setIsListening(false));
+                    dispatch(setShowInput(false));
                 }
             } catch (error) {
                 console.error('음성 인식 초기화 오류:', error);
-                setIsListening(false);
+                dispatch(setIsListening(false));
             }
         } else {
             // 음성 인식 중지
-            setIsListening(false);
+            dispatch(setIsListening(false));
         }
     };
 
     const handleKeyboardPress = () => {
-        setShowInput(true);
-        setIsKeyboardVisible(true);
+        dispatch(setShowInput(true));
         
         setTimeout(() => {
             if (inputRef.current) {
@@ -80,23 +97,31 @@ const Brief = ({ scrollToSection }) => {
         }, 100);
     };
 
-    const handleConvert = (text) => {
-        // AI 변환 시뮬레이션
-        const converted = "어려운 문화 설명을 쉽게 바꿔드릴게요! 🎭✨";
-        setConvertedText(converted);
+    const handleConvert = async (text) => {
+        try {
+            console.log('🎯 handleConvert 호출됨, 입력 텍스트:', text);
+            // 텍스트 API 호출
+            await dispatch(requestExplainText(text));
+            console.log('✅ requestExplainText 완료');
+        } catch (error) {
+            console.error('❌ 문화유산 설명 요청 실패:', error);
+        }
     };
 
     const handleInputSubmit = () => {
+        console.log('⌨️ handleInputSubmit 호출됨, inputText:', inputText);
         if (inputText.trim()) {
+            console.log('✅ 텍스트가 있음, handleConvert 호출');
             handleConvert(inputText);
+        } else {
+            console.log('❌ 빈 텍스트, handleConvert 호출 안함');
         }
     };
 
     const handleInputBlur = () => {
-        setIsKeyboardVisible(false);
         // 입력이 없으면 입력 모드 종료
         if (!inputText.trim()) {
-            setShowInput(false);
+            dispatch(setShowInput(false));
         }
     };
 
@@ -105,7 +130,11 @@ const Brief = ({ scrollToSection }) => {
     };
 
     const handleTextChange = (text) => {
-        // 텍스트 변경 처리
+        dispatch(setInputText(text));
+    };
+
+    const handleClearResult = () => {
+        dispatch(clearResult());
     };
 
     return (
@@ -117,23 +146,25 @@ const Brief = ({ scrollToSection }) => {
                     <MainContent 
                         showInput={showInput} 
                         inputText={inputText} 
-                        convertedText={convertedText} 
+                        result={result} 
                     />
                     
                     <InputSection 
                         showInput={showInput}
                         inputText={inputText}
-                        setInputText={setInputText}
-                        convertedText={convertedText}
-                        setConvertedText={setConvertedText}
+                        result={result}
+                        loading={loading}
+                        error={error}
                         inputRef={inputRef}
                         handleInputSubmit={handleInputSubmit}
                         handleInputBlur={handleInputBlur}
                         onTextChange={handleTextChange}
+                        onClearResult={handleClearResult}
                     />
                     
                     <ControlButtons 
                         isListening={isListening}
+                        loading={loading}
                         handleMicPress={handleMicPress}
                         handleKeyboardPress={handleKeyboardPress}
                         showInput={showInput}

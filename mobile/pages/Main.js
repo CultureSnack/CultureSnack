@@ -1,5 +1,6 @@
-import React, { useRef } from 'react';
 import { View, StyleSheet, StatusBar, ScrollView, Dimensions } from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { theme, debugInfo } from '../utils/theme';
 import MainHeader from '../components/Main/MainHeader';
 import MainText from '../components/Main/MainText';
@@ -8,8 +9,6 @@ import SubTitle from '../components/Main/SubTitle';
 import DecorativeImage from '../components/Main/DecorativeImage';
 import TableOfContents from '../components/TableOfContents/TableOfContents';
 import Brief from '../components/Brief/Brief';
-
-// 화면 크기 가져오기
 const { height: screenHeight, width: screenWidth } = Dimensions.get('window');
 
 // 개발 중 디버그 정보 출력
@@ -19,6 +18,8 @@ if (__DEV__) {
 
 const Main = () => {
     const scrollViewRef = useRef(null);
+    const navigation = useNavigation();
+    const route = useRoute();
 
     // 특정 섹션으로 스크롤 이동
     const scrollToSection = (sectionIndex) => {
@@ -29,6 +30,17 @@ const Main = () => {
             });
         }
     };
+
+    // route params에서 scrollToSection이 있으면 자동으로 스크롤
+    useEffect(() => {
+        if (route.params?.scrollToSection !== undefined) {
+            console.log('📱 자동 스크롤 요청:', route.params.scrollToSection);
+            // 컴포넌트가 완전히 마운트된 후 스크롤
+            setTimeout(() => {
+                scrollToSection(route.params.scrollToSection);
+            }, 100);
+        }
+    }, [route.params]);
 
     return (
         <View style={styles.container}>
@@ -58,12 +70,12 @@ const Main = () => {
 
                 {/* 두 번째 화면 - 목차 */}
                 <View style={styles.screen}>
-                    <TableOfContents scrollToSection={scrollToSection} />
+                    <TableOfContents scrollToSection={scrollToSection} navigation={navigation} />
                 </View>
 
                 {/* 세 번째 화면 - Brief */}
                 <View style={styles.screen}>
-                    <Brief scrollToSection={scrollToSection} />
+                    <Brief scrollToSection={scrollToSection} navigation={navigation} />
                 </View>
             </ScrollView>
         </View>

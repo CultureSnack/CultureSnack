@@ -1,15 +1,29 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { theme } from '../../utils/theme';
 
 const { width: screenWidth } = Dimensions.get('window');
 
 const TopNavigation = ({ scrollToSection }) => {
+
+    const navigation = useNavigation();
+
+    const handleSnackGuidePress = () => {
+        console.log('🔄 Brief에서 Snack Guide 버튼 클릭');
+        try {
+            navigation.navigate('Culturesnack_Manual_Ui');
+            console.log('✅ Brief → Culturesnack_Manual_Ui 이동');
+        } catch (error) {
+            console.error('❌ Brief Navigation 에러:', error);
+        }
+    };
+    
     return (
         <View style={styles.topNavigation}>
             <TouchableOpacity 
                 style={styles.leftSection}
-                onPress={() => {/* 준비중 - 무반응 */}}
+                onPress={handleSnackGuidePress}
             >
                 <Text 
                     style={styles.navTitle}
