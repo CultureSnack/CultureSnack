@@ -2,13 +2,24 @@ import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image } from 'react-native';
 import { theme, typography } from '../../utils/theme';
-import { useRouter } from 'expo-router';
-
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('window');
 
 const TableOfContents = ({ scrollToSection }) => {
-    const router = useRouter();
+    const navigation = useNavigation();
+
+    const handleManualPress = () => {
+        console.log('🔄 사용 설명서 버튼 클릭');
+        console.log('📊 Navigation 객체:', navigation);
+        console.log('📊 Navigation state:', navigation.getState ? navigation.getState() : 'getState 없음');
+        
+        try {
+            navigation.navigate('Culturesnack_Manual_Ui');
+            console.log('✅ Navigate 명령 실행됨 - Culturesnack_Manual_Ui');
+        } catch (error) {
+            console.error('❌ Navigate 에러:', error);
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -55,12 +66,11 @@ const TableOfContents = ({ scrollToSection }) => {
 
                 {/* 컬처스낵 사용 설명서 */}
                 <TouchableOpacity 
-                    style={[styles.contentItem, styles.disabledItem]}
-                    onPress={() => router.push('/Culturesnack_Manual_Ui')}
+                    style={styles.contentItem}
+                    onPress={handleManualPress}
                 >
                     <Text style={styles.itemTitle}>컬처스낵 사용 설명서{'\n'}(Snack Guide)</Text>
                     <Text style={styles.itemDescription}>처음이라면? 먼저 확인!</Text>
-                    <Text style={styles.comingSoon}>준비중</Text>
                 </TouchableOpacity>
             </View>
 
@@ -145,6 +155,7 @@ const styles = StyleSheet.create({
     itemTitle: {
         ...typography.tableOfContents.itemTitle,
         marginBottom: 12,
+        fontWeight: 'bold',
     },
     itemDescription: {
         ...typography.tableOfContents.itemDescription,

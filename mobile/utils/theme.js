@@ -144,6 +144,7 @@ export const typography = {
   subtitle: {
     multiLine: {
       fontSize: smartFont(28, "Savor culture lightly, Remember deeply", SCREEN_WIDTH * 0.70),
+      fontWeight: 'bold',
       fontFamily: theme.fonts.bold,
       color: theme.colors.text,
       letterSpacing: w(1.2),
@@ -174,6 +175,7 @@ export const typography = {
     },
     itemTitle: {
       fontSize: SCREEN_WIDTH * 0.04,
+      fontWeight: 'bold',
       fontFamily: theme.fonts.bold,
       color: '#F7E7CE',
       lineHeight: SCREEN_WIDTH * 0.08,
@@ -232,6 +234,210 @@ export const typography = {
       color: '#F7E7CE', // CSS 색상
       lineHeight: w(20), // CSS: line-height: 170%
       textAlign: 'center',
+    },
+  },
+
+  // 매뉴얼 페이지
+  manual: {
+    // 로고
+    logo: {
+      width: w(80),
+      height: w(80),
+      borderRadius: w(40),
+    },
+    
+    // 메인 안내 이미지
+    mainGuide: {
+      image: {
+        width: SCREEN_WIDTH * 1.3,
+        height: SCREEN_WIDTH * 1.3,
+      },
+      textOverlay: {
+        left: w(60),
+        right: w(60),
+      },
+      text1: {
+        fontSize: 12,
+        fontWeight: 'bold',
+        fontFamily: theme.fonts.bold,
+        color: '#f7e7ce',
+        textAlign: 'center',
+        textShadowColor: 'rgba(0, 0, 0, 0.8)',
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 3,
+        marginBottom: 5,
+      },
+      text2: {
+        fontSize: 12,
+        fontFamily: theme.fonts.regular,
+        color: '#f7e7ce',
+        textAlign: 'center',
+        textShadowColor: 'rgba(0, 0, 0, 0.8)',
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 3,
+        marginBottom: 5,
+      },
+      text3: {
+        fontSize: 12,
+        fontWeight: 'bold',
+        fontFamily: theme.fonts.bold,
+        color: '#daa520',
+        textAlign: 'center',
+        textShadowColor: 'rgba(0, 0, 0, 0.8)',
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 3,
+      },
+    },
+    
+    // 기능 아이콘
+    icons: {
+      row: {
+        width: '95%',
+        marginBottom: h(30),
+        paddingHorizontal: w(10),
+      },
+      block: {
+        width: '30%',
+      },
+      image: {
+        width: w(100),
+        height: w(100),
+      },
+      overlay: {
+        paddingHorizontal: w(8),
+      },
+      text: {
+        fontSize: 12,
+        fontWeight: 'bold',
+        fontFamily: theme.fonts.bold,
+        color: '#f7e7ce',
+        textAlign: 'center',
+        textShadowColor: 'rgba(0, 0, 0, 0.8)',
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 3,
+      },
+    },
+    
+    // 채팅 예시
+    chat: {
+      block: {
+        width: '90%',
+        marginBottom: h(20),
+        marginTop: h(30),
+      },
+      rightContainer: {
+        marginRight: w(-10),
+      },
+      leftContainer: {
+        marginLeft: w(-20),
+      },
+      image: {
+        width: SCREEN_WIDTH * 0.6,
+        height: SCREEN_WIDTH * 0.6,
+      },
+      textOverlay: {
+        paddingHorizontal: w(20),
+        paddingVertical: h(15),
+      },
+      text: {
+        fontSize: 9,
+        fontWeight: 'bold',
+        fontFamily: theme.fonts.bold,
+        color: '#f7e7ce',
+        textAlign: 'center',
+        textShadowColor: 'rgba(0, 0, 0, 0.8)',
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 3,
+        lineHeight: 15,
+      },
+      rightOverlay: {
+        paddingLeft: w(-40),
+        paddingRight: w(20),
+        paddingVertical: h(15),
+      },
+      leftOverlay: {
+        paddingLeft: w(25),
+        paddingRight: w(-50),
+        paddingVertical: h(15),
+      },
+    },
+    
+    // 하단 텍스트
+    bottomText: {
+      main: {
+        fontSize: 12,
+        fontWeight: 'bold',
+        fontFamily: theme.fonts.bold,
+        color: '#f7e7ce',
+        marginBottom: h(15),
+      },
+      text1: {
+        fontSize: 12,
+        fontWeight: 'bold',
+        fontFamily: theme.fonts.bold,
+        color: '#f7e7ce',
+        marginTop: h(15),
+        marginBottom: h(15),
+      },
+      text2: {
+        fontSize: 12,
+        fontWeight: 'bold',
+        fontFamily: theme.fonts.bold,
+        color: '#f7e7ce',
+        marginTop: h(15),
+        marginBottom: h(15),
+      },
+    },
+    
+    // 버튼
+    button: {
+      paddingVertical: h(10),
+      paddingHorizontal: w(40),
+      marginTop: h(60),
+      marginBottom: h(50),
+      borderRadius: w(25),
+      borderWidth: 2,
+      borderColor: '#daa520',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.3,
+      shadowRadius: 8,
+      elevation: 5,
+      text: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        fontFamily: theme.fonts.bold,
+        color: '#daa520',
+        textAlign: 'center',
+        letterSpacing: w(0.5),
+      },
+    },
+    
+    // 데코 문양
+    decoration: {
+      topLeft: {
+        left: SCREEN_WIDTH * -0.06,
+        top: SCREEN_HEIGHT * -0.01,
+        width: SCREEN_WIDTH * 0.32,
+        height: SCREEN_WIDTH * 0.32,
+      },
+      topRight: {
+        right: SCREEN_WIDTH * -0.07,
+        top: SCREEN_HEIGHT * -0.01,
+        width: SCREEN_WIDTH * 0.32,
+        height: SCREEN_WIDTH * 0.32,
+      },
+      bottomLeft: {
+        left: SCREEN_WIDTH * -0.06,
+        bottom: SCREEN_HEIGHT * -0.02,
+        width: SCREEN_WIDTH * 0.32,
+        height: SCREEN_WIDTH * 0.32,
+      },
+      bottomRight: {
+        right: SCREEN_WIDTH * -0.07,
+        bottom: SCREEN_HEIGHT * -0.02,
+        width: SCREEN_WIDTH * 0.32,
+        height: SCREEN_WIDTH * 0.32,
+      },
     },
   },
 };

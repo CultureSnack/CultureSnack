@@ -11,6 +11,11 @@ import { theme, debugInfo } from './utils/theme';
 
 const Stack = createNativeStackNavigator();
 
+// 디버깅용 로그
+console.log('📱 App.js 로딩됨');
+console.log('📱 CultureManual 컴포넌트:', CultureManual);
+console.log('📱 Main 컴포넌트:', Main);
+
 export default function App() {
     const [fontsLoaded, setFontsLoaded] = useState(false);
 
@@ -68,16 +73,32 @@ export default function App() {
         );
     }
 
+    console.log('🚀 NavigationContainer 렌더링 시작');
+
     return (
-        <NavigationContainer>
+        <NavigationContainer
+            onReady={() => console.log('✅ Navigation 준비 완료')}
+            onStateChange={(state) => console.log('📊 Navigation 상태 변경:', state)}
+        >
             <StatusBar
                 barStyle="light-content"
                 backgroundColor={theme.colors.background}
                 translucent={false}
             />
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Main" component={Main} />
-                <Stack.Screen name="CultureManual" component={CultureManual} />
+            <Stack.Navigator 
+                screenOptions={{ headerShown: false }}
+                initialRouteName="Main"
+            >
+                <Stack.Screen 
+                    name="Main" 
+                    component={Main}
+                    options={{ title: 'Main Screen' }}
+                />
+                <Stack.Screen 
+                    name="CultureManual" 
+                    component={CultureManual}
+                    options={{ title: 'Culture Manual' }}
+                />
             </Stack.Navigator>
         </NavigationContainer>
     );
