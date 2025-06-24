@@ -1,22 +1,29 @@
 // App.js - 완벽한 최종 버전
+
+// URL polyfill for React Navigation
+import 'react-native-url-polyfill/auto';
+
 import React, { useState, useEffect } from 'react';
-import { View, Platform, StatusBar } from 'react-native';
+import { View, Platform, StatusBar, AppRegistry } from 'react-native';
 import * as Font from 'expo-font';
 import * as NavigationBar from 'expo-navigation-bar';
+import { Provider } from 'react-redux';
 import Main from './pages/Main';
 import CultureManual from './app/Culturesnack_Manual_Ui';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { theme, debugInfo } from './utils/theme';
+import store from './store';
+
+const Stack = createNativeStackNavigator();
 
 // 디버깅용 로그
 console.log('📱 App.js 로딩됨');
 console.log('📱 CultureManual 컴포넌트:', CultureManual);
 console.log('📱 Main 컴포넌트:', Main);
 
-const Stack = createNativeStackNavigator();
-
 export default function App() {
+    console.log('🚀 App 컴포넌트 시작');
     const [fontsLoaded, setFontsLoaded] = useState(false);
 
     useEffect(() => {
@@ -31,7 +38,7 @@ export default function App() {
                 setFontsLoaded(true);
             } catch (error) {
                 console.error('❌ 폰트 로딩 실패:', error);
-                setFontsLoaded(true);
+                setFontsLoaded(true); // 실패해도 계속 진행
             }
         }
 
@@ -63,7 +70,7 @@ export default function App() {
         }
     }, []);
 
-    // 폰트 로딩 중 화면
+    // 폰트 로딩 중 화면 (로딩 시간 제한)
     if (!fontsLoaded) {
         return (
             <View style={{
@@ -72,33 +79,32 @@ export default function App() {
             }} />
         );
     }
-
+    
     return (
-        <NavigationContainer
-            onReady={() => console.log('✅ Navigation 준비 완료')}
-            onStateChange={(state) => console.log('📊 Navigation 상태 변경:', state)}
-        >
-            <StatusBar
-                barStyle="light-content"
-                backgroundColor={theme.colors.background}
-                translucent={false}
-            />
-            <Stack.Navigator 
-                screenOptions={{ headerShown: false }}
-                initialRouteName="Main"
-            >
-                <Stack.Screen 
-                    name="Main" 
-                    component={Main}
-                    options={{ title: 'Main Screen' }}
+        <Provider store={store}>
+            <NavigationContainer>
+                <StatusBar
+                    barStyle="light-content"
+                    backgroundColor={theme.colors.background}
+                    translucent={false}
                 />
-                <Stack.Screen 
-                    name="CultureManual" 
-                    component={CultureManual}
-                    options={{ title: 'Culture Manual' }}
-                />
-            </Stack.Navigator>
-        </NavigationContainer>
+                <Stack.Navigator 
+                    screenOptions={{ headerShown: false }}
+                    initialRouteName="Main"
+                >
+                    <Stack.Screen 
+                        name="Main" 
+                        component={Main}
+                        options={{ title: 'Main Screen' }}
+                    />
+                    <Stack.Screen 
+                        name="CultureManual" 
+                        component={CultureManual}
+                        options={{ title: 'Culture Manual' }}
+                    />
+                </Stack.Navigator>
+            </NavigationContainer>
+        </Provider>
     );
 }
 
@@ -147,3 +153,6 @@ export default function App() {
 - 안드로이드/iOS 구분 없이 동일한 모습
 - 화면 비율에 자동으로 맞춰지는 모든 요소
 */
+
+// App 등록 (필수)
+AppRegistry.registerComponent('main', () => App);

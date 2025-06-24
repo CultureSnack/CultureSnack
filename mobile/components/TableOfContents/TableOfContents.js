@@ -14,8 +14,8 @@ const TableOfContents = ({ scrollToSection }) => {
         console.log('📊 Navigation state:', navigation.getState ? navigation.getState() : 'getState 없음');
 
         try {
-            navigation.navigate('Culturesnack_Manual_Ui');
-            console.log('✅ Navigate 명령 실행됨 - Culturesnack_Manual_Ui');
+            navigation.navigate('CultureManual');
+            console.log('✅ Navigate 명령 실행됨 - CultureManual');
         } catch (error) {
             console.error('❌ Navigate 에러:', error);
         }

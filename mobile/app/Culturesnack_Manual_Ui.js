@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Alert } from 'react-native';
 import { theme, typography } from '../utils/theme';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
@@ -25,8 +26,8 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
         console.log('✅ Navigation 존재 - 메인으로 이동');
         try {
           // 메인 페이지의 첫 번째 섹션(0번 인덱스)으로 이동
-          navigation.navigate('index', { scrollToSection: 0 });
-          console.log('📱 index 페이지 메인 섹션으로 이동');
+          navigation.navigate('Main', { scrollToSection: 0 });
+          console.log('📱 Main 페이지 메인 섹션으로 이동');
         } catch (error) {
           console.error('❌ Navigation 에러:', error);
           Alert.alert('에러', '메인 화면으로 이동하는 중 오류가 발생했습니다.');
@@ -45,8 +46,8 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
         console.log('✅ Navigation 존재 - 브리프로 이동');
         try {
           // 브리프 섹션(2번 인덱스)으로 이동
-          navigation.navigate('index', { scrollToSection: 2 });
-          console.log('📱 index 페이지 브리프 섹션으로 이동');
+          navigation.navigate('Main', { scrollToSection: 2 });
+          console.log('📱 Main 페이지 브리프 섹션으로 이동');
         } catch (error) {
           console.error('❌ Navigation 에러:', error);
           Alert.alert('에러', '브리프 화면으로 이동하는 중 오류가 발생했습니다.');
@@ -62,7 +63,7 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
     try {
       navigation.reset({
         index: 0,
-        routes: [{ name: 'index' }],
+        routes: [{ name: 'Main' }],
       });
     } catch (error) {
       console.error('강제 이동 실패:', error);

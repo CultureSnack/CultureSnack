@@ -12,8 +12,8 @@ const TopNavigation = ({ scrollToSection }) => {
     const handleSnackGuidePress = () => {
         console.log('🔄 Brief에서 Snack Guide 버튼 클릭');
         try {
-            navigation.navigate('Culturesnack_Manual_Ui');
-            console.log('✅ Brief → Culturesnack_Manual_Ui 이동');
+            navigation.navigate('CultureManual');
+            console.log('✅ Brief → CultureManual 이동');
         } catch (error) {
             console.error('❌ Brief Navigation 에러:', error);
         }
