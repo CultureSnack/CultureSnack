@@ -39,8 +39,8 @@ const InputAndButtonsSection = ({
               ref={inputRef}
               style={inputSectionStyles.hiddenTextInput}
               placeholder=""
-              value={inputText} // 반드시 props.inputText
-              onChangeText={onTextChange} // 반드시 props.onTextChange
+              value={inputText}  // 반드시 props.inputText
+              onChangeText={onTextChange}  // 반드시 props.onTextChange
               multiline={false}
               blurOnSubmit={true}
               onSubmitEditing={handleInputSubmit}
@@ -133,29 +133,34 @@ const InputAndButtonsSection = ({
             </View>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={inputSectionStyles.keyboardButton} onPress={handleKeyboardPress}>
-          <View style={inputSectionStyles.keyboardIcon}>
-            <View style={inputSectionStyles.keyboardRow}>
-              <View style={inputSectionStyles.key} />
-              <View style={inputSectionStyles.key} />
-              <View style={inputSectionStyles.key} />
-              <View style={inputSectionStyles.key} />
-            </View>
-            <View style={inputSectionStyles.keyboardRow}>
-              <View style={inputSectionStyles.key} />
-              <View style={inputSectionStyles.key} />
-              <View style={inputSectionStyles.key} />
-            </View>
-            <View style={inputSectionStyles.keyboardRow}>
-              <View style={[inputSectionStyles.key, inputSectionStyles.spaceKey]} />
-            </View>
-          </View>
-          <Text style={inputSectionStyles.keyboardLabel}>입력</Text>
-        </TouchableOpacity>
-      </View>
+       <TouchableOpacity style={inputSectionStyles.keyboardButton} onPress={handleKeyboardPress}>
+         <View style={inputSectionStyles.keyboardIcon}>
+           <View style={inputSectionStyles.keyboardRow}>
+             <View style={inputSectionStyles.key} />
+             <View style={inputSectionStyles.key} />
+             <View style={inputSectionStyles.key} />
+             <View style={inputSectionStyles.key} />
+           </View>
+           <View style={inputSectionStyles.keyboardRow}>
+             <View style={inputSectionStyles.key} />
+             <View style={inputSectionStyles.key} />
+             <View style={inputSectionStyles.key} />
+           </View>
+           <View style={inputSectionStyles.keyboardRow}>
+             <View style={inputSectionStyles.key} />
+             <View style={inputSectionStyles.key} />
+             <View style={inputSectionStyles.key} />
+           </View>
+           <View style={inputSectionStyles.keyboardRow}>
+             <View style={[inputSectionStyles.key, inputSectionStyles.spaceKey]} />
+           </View>
+         </View>
+         <Text style={inputSectionStyles.keyboardLabel}>입력</Text>
+       </TouchableOpacity>
+     </View>
     </View>
-  );
-};
+   );
+ };
 
 const inputSectionStyles = StyleSheet.create({
   container: {
@@ -183,12 +188,14 @@ const inputSectionStyles = StyleSheet.create({
     marginBottom: 8,
   },
   inputText: {
-    fontSize: 18,
+    fontSize: 20,
     color: theme.colors.text,
     padding: 8,
     borderRadius: 8,
     backgroundColor: theme.colors.card,
     marginBottom: 8,
+    top: -150, // 부모 기준 상단 정렬
+    alignSelf: 'center', // 부모 기준 가로 중앙
   },
   hiddenTextInput: {
     position: 'absolute',
@@ -234,13 +241,21 @@ const inputSectionStyles = StyleSheet.create({
     borderRadius: 8,
     padding: 16,
     marginBottom: 8,
+    alignItems: 'center', // 가로 중앙 정렬
+    justifyContent: 'center', // 세로 중앙 정렬
+    alignSelf: 'center', // 부모 기준 가로 중앙
+    minHeight: 200, // 충분한 높이 확보(필요시 조정)
+    width: '90%', // 넓이 제한(필요시 조정)
+    top: -150, // 부모 기준 상단 정렬
   },
   transcriptSection: {
     marginBottom: 8,
   },
   transcriptLabel: {
+    alignItems: 'center',
+    justifyContent: 'center',
     fontSize: 14,
-    color: theme.colors.white,
+    color: theme.colors.text,
     marginBottom: 4,
   },
   transcriptText: {
@@ -268,7 +283,7 @@ const inputSectionStyles = StyleSheet.create({
   },
   clearResultButtonText: {
     fontSize: 16,
-    color: theme.colors.white,
+    color: theme.colors.text,
   },
   buttonsRow: {
     flexDirection: 'row',
@@ -308,44 +323,86 @@ const inputSectionStyles = StyleSheet.create({
   micIconActive: {
     backgroundColor: theme.colors.secondary,
   },
-  keyboardButton: {
-    backgroundColor: theme.colors.secondary,
-    borderRadius: 8,
-    padding: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 64,
-    height: 64,
-  },
-  keyboardIcon: {
+    keyboardIcon: {
     width: 24,
-    height: 24,
-    tintColor: theme.colors.white,
-  },
-  keyboardLabel: {
-    fontSize: 12,
-    color: theme.colors.white,
-    marginTop: 4,
+    height: 18,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 3,
   },
   keyboardRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
+    marginBottom: 1,
   },
   key: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: theme.colors.white,
+    width: 4,
+    height: 3,
+    backgroundColor: theme.colors.primary,
+    borderRadius: 1,
   },
   spaceKey: {
-    flex: 1,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: theme.colors.white,
-    marginHorizontal: 4,
+    width: 16,
+    height: 3,
   },
+  keyboardLabel: {
+    fontSize: 8,
+    fontFamily: theme.fonts.regular,
+    color: theme.colors.primary,
+    textAlign: 'center',
+    marginTop: 2,
+  },
+  inputPrompt: {
+    position: 'absolute',
+    width: 200,
+    left: '50%',
+    marginLeft: -100,
+    top: 580,
+    fontSize: 12,
+    fontFamily: theme.fonts.regular,
+    color: '#F7E7CE',
+    textAlign: 'center',
+  },
+//   keyboardButton: {
+//     backgroundColor: theme.colors.secondary,
+//     borderRadius: 8,
+//     padding: 12,
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     width: 64,
+//     height: 64,
+//   },
+//   keyboardIcon: {
+//     width: 24,
+//     height: 24,
+//     tintColor: theme.colors.white,
+//   },
+//   keyboardLabel: {
+//     fontSize: 12,
+//     color: theme.colors.white,
+//     marginTop: 4,
+//   },
+//   keyboardRow: {
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//     alignItems: 'center',
+//     width: '100%',
+//   },
+//   key: {
+//     width: 6,
+//     height: 6,
+//     borderRadius: 3,
+//     backgroundColor: theme.colors.white,
+//   },
+//   spaceKey: {
+//     flex: 1,
+//     height: 6,
+//     borderRadius: 3,
+//     backgroundColor: theme.colors.white,
+//     marginHorizontal: 4,
+//   },
 });
 
 export default InputAndButtonsSection;

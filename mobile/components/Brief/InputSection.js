@@ -157,12 +157,12 @@
     //     paddingTop: 20,
     // },
     // inputText: {
-    //     fontSize: screenWidth * 0.038,
-    //     fontFamily: theme.fonts.regular,
-    //     color: '#F7E7CE',
-    //     textAlign: 'center',
-    //     marginBottom: 20,
-    //     minHeight: 30,
+        // fontSize: screenWidth * 0.038,
+        // fontFamily: theme.fonts.regular,
+        // color: '#F7E7CE',
+        // textAlign: 'center',
+        // marginBottom: 20,
+        // minHeight: 30,
     // },
     // hiddenTextInput: {
     //     position: 'absolute',
