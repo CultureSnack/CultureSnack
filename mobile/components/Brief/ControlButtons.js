@@ -1,107 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
-import { Audio } from 'expo-av';
 import { theme } from '../../utils/theme';
-import { explainAudio, getAudioFile } from '../../apis/ExplainAPICalls';
 
 const { width: screenWidth } = Dimensions.get('window');
 
-const RECORDING_OPTIONS = {
-  android: {
-    extension: '.wav',
-    outputFormat: Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_DEFAULT,
-    audioEncoder: Audio.RECORDING_OPTION_ANDROID_AUDIO_ENCODER_DEFAULT,
-    sampleRate: 44100,
-    numberOfChannels: 2,
-    bitRate: 128000,
-  },
-  ios: {
-    extension: '.wav',
-    audioQuality: Audio.RECORDING_OPTION_IOS_AUDIO_QUALITY_HIGH,
-    sampleRate: 44100,
-    numberOfChannels: 2,
-    bitRate: 128000,
-    linearPCMBitDepth: 16,
-    linearPCMIsBigEndian: false,
-    linearPCMIsFloat: false,
-  },
-};
-
-const ControlButtons = ({ handleKeyboardPress, showInput }) => {
-  const [isListening, setIsListening] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null);
-  const [error, setError] = useState(null);
-  const recordingRef = useRef(null);
-
-  const startRecording = async () => {
-    try {
-      console.log('🎙️ 마이크 권한 요청');
-      const permission = await Audio.requestPermissionsAsync();
-      if (!permission.granted) {
-        throw new Error('마이크 권한이 필요합니다.');
-      }
-
-      console.log('🔴 녹음 시작');
-      await Audio.setAudioModeAsync({
-        allowsRecordingIOS: true,
-        playsInSilentModeIOS: true,
-      });
-
-      const { recording } = await Audio.Recording.createAsync(RECORDING_OPTIONS);
-      recordingRef.current = recording;
-      setIsListening(true);
-    } catch (error) {
-      console.error('녹음 시작 실패:', error);
-      setError(error.message || '녹음 중 오류가 발생했습니다.');
-    }
-  };
-
-  const stopRecording = async () => {
-    try {
-      console.log('🛑 녹음 종료');
-      const recording = recordingRef.current;
-      if (!recording) return;
-
-      await recording.stopAndUnloadAsync();
-      const uri = recording.getURI();
-
-      console.log('📁 녹음 파일 URI:', uri);
-
-      setIsListening(false);
-      return {
-        uri,
-        type: 'audio/wav', // 실제 파일 타입과 맞추기
-        name: `recording-${Date.now()}.wav`,
-      };
-    } catch (error) {
-      console.error('녹음 종료 실패:', error);
-      setError(error.message || '녹음 종료 중 오류가 발생했습니다.');
-    }
-  };
-
-  const handleMicButtonPress = async () => {
-    if (!isListening) {
-      await startRecording();
-    } else {
-      const audioFile = await stopRecording();
-      if (!audioFile) return;
-
-      setLoading(true);
-      try {
-        const result = await explainAudio(audioFile);
-        if (result.audio_url) {
-          result.audio_url = getAudioFile(result.audio_url);
-        }
-        setResult(result);
-      } catch (e) {
-        console.error('오디오 전송 실패:', e);
-        setError(e.message || '오류가 발생했습니다.');
-      }
-      setLoading(false);
-    }
-  };
-
+const ControlButtons = ({ isListening, loading, handleMicPress, handleKeyboardPress, showInput }) => {
   return (
     <>
       {!showInput && (
@@ -110,7 +13,7 @@ const ControlButtons = ({ handleKeyboardPress, showInput }) => {
 
       <TouchableOpacity
         style={[styles.micButton, isListening && styles.micButtonActive]}
-        onPress={handleMicButtonPress}
+        onPress={handleMicPress}
         disabled={loading}
       >
         <View style={styles.micButtonInner}>
@@ -128,10 +31,7 @@ const ControlButtons = ({ handleKeyboardPress, showInput }) => {
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.keyboardButton}
-        onPress={handleKeyboardPress}
-      >
+      <TouchableOpacity style={styles.keyboardButton} onPress={handleKeyboardPress}>
         <View style={styles.keyboardIcon}>
           <View style={styles.keyboardRow}>
             <View style={styles.key} />

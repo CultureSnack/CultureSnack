@@ -28,7 +28,7 @@ def explain_cultural_heritage(user_input: str) -> dict:
         heritage_name = match1.iloc[0]['데이터명']
         heritage_info = match1.iloc[0]['문양설명']
         prompt = (
-            # f"한 문장은 한 가지 정보만, 문장 길이는 50자 이내. 추상어 대신 구체적인 단어 사용. 부정문보다는 긍정문. 비유적 표현, 관용어, 한자어 지양. "
+            f"한 문장은 한 가지 정보만, 문장 길이는 50자 이내. 추상어 대신 구체적인 단어 사용. 부정문보다는 긍정문. 비유적 표현, 관용어, 한자어 지양. "
             f"Summarize the explanation about {heritage_name} so that even elementary school students can easily understand it. "
             f"Return the result strictly in JSON format with two keys: 'summary' and 'difficult_words'. "
             f"The format must be exactly like this: "
@@ -44,7 +44,7 @@ def explain_cultural_heritage(user_input: str) -> dict:
             heritage_name = match2.iloc[0]['작품명']
             heritage_info = match2.iloc[0]['작품해설_내용']
             prompt = (
-                # f"한 문장은 한 가지 정보만, 문장 길이는 50자 이내. 추상어 대신 구체적인 단어 사용. 부정문보다는 긍정문. 비유적 표현, 관용어, 한자어 지양. "
+                f"한 문장은 한 가지 정보만, 문장 길이는 50자 이내. 추상어 대신 구체적인 단어 사용. 부정문보다는 긍정문. 비유적 표현, 관용어, 한자어 지양. "
                 f"Summarize the explanation about {heritage_name} so that even elementary school students can easily understand it. "
                 f"Return the result strictly in JSON format with two keys: 'summary' and 'difficult_words'. "
                 f"The format must be exactly like this: "
@@ -59,7 +59,7 @@ def explain_cultural_heritage(user_input: str) -> dict:
                 print("✅ 첫 번째 엑셀의 '문양설명'에서 검색된 결과:", match3)
                 heritage_info = match3.iloc[0]['문양설명']
                 prompt = (
-                    # f"한 문장은 한 가지 정보만, 문장 길이는 50자 이내. 추상어 대신 구체적인 단어 사용. 부정문보다는 긍정문. 비유적 표현, 관용어, 한자어 지양. "
+                    f"한 문장은 한 가지 정보만, 문장 길이는 50자 이내. 추상어 대신 구체적인 단어 사용. 부정문보다는 긍정문. 비유적 표현, 관용어, 한자어 지양. "
                     f"Summarize the explanation about {heritage_name} so that even elementary school students can easily understand it. "
                     f"Return the result strictly in JSON format with two keys: 'summary' and 'difficult_words'. "
                     f"The format must be exactly like this: "
@@ -74,7 +74,7 @@ def explain_cultural_heritage(user_input: str) -> dict:
                     print("✅ 두 번째 엑셀의 '작품해설_내용'에서 검색된 결과:", match4)
                     heritage_info = match4.iloc[0]['작품해설_내용']
                     prompt = (
-                        # f"한 문장은 한 가지 정보만, 문장 길이는 50자 이내. 추상어 대신 구체적인 단어 사용. 부정문보다는 긍정문. 비유적 표현, 관용어, 한자어 지양. "
+                        f"한 문장은 한 가지 정보만, 문장 길이는 50자 이내. 추상어 대신 구체적인 단어 사용. 부정문보다는 긍정문. 비유적 표현, 관용어, 한자어 지양. "
                         f"Summarize the explanation about {heritage_name} so that even elementary school students can easily understand it. "
                         f"Return the result strictly in JSON format with two keys: 'summary' and 'difficult_words'. "
                         f"The format must be exactly like this: "
