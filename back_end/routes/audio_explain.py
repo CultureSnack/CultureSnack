@@ -1,25 +1,37 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import FastAPI, Request, APIRouter
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from services.gpt_service import explain_cultural_heritage
 from services.tts_service import generate_tts
-from fastapi import Request
 import uuid
 
-router = APIRouter(prefix="/explain", tags=["Text Explain"])
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class TextRequest(BaseModel):
     input: str
 
+router = APIRouter(prefix="/explain", tags=["Audio Explain"])
+
 @router.post("/text")
-def explain_text(req: TextRequest, request: Request):
+async def explain_text(req: TextRequest, request: Request):
     result = explain_cultural_heritage(req.input)
 
-    if result["summary"]:
+    if result.get("summary"):
         filename = f"{uuid.uuid4().hex}.mp3"
         generate_tts(result["summary"], filename)
 
-        # 절대 URL 반환
         base_url = str(request.base_url).rstrip("/")
         result["audio_url"] = f"{base_url}/audio/{filename}"
 
     return result
+
+# 라우터 등록
+app.include_router(router)

@@ -1,23 +1,63 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
 import { theme } from '../../utils/theme';
+import { explainText } from '../../apis/ExplainAPICalls'; // 백엔드 API 호출 함수
+import { Audio } from 'expo-av';
 
 const { width: screenWidth } = Dimensions.get('window');
 
 const InputSection = ({ 
     showInput, 
-    inputText, 
-    result, 
-    loading,
-    error,
+    inputText: initialInputText, 
+    result: initialResult, 
+    loading: initialLoading,
+    error: initialError,
     inputRef, 
-    handleInputSubmit, 
-    handleInputBlur,
     onTextChange,
     onClearResult
 }) => {
+    const [inputText, setInputText] = useState(initialInputText);
+    const [result, setResult] = useState(initialResult);
+    const [loading, setLoading] = useState(initialLoading);
+    const [error, setError] = useState(initialError);
+    const [sound, setSound] = useState(null);
+
     // 입력이나 결과가 있을 때만 표시
     if (!inputText && !result && !showInput) return null;
+
+    const handleInputSubmit = async () => {
+        if (!inputText.trim()) return;
+        setLoading(true);
+        setError(null);
+        setResult(null);
+        try {
+            const requestData = { input: inputText };
+            // 여기서 백엔드로 요청
+            const response = await explainText(inputText); // 내부적으로 apis.post(`/explain/text`, requestData) 호출
+            setResult(response);
+        } catch (e) {
+            setError(e.message || '오류가 발생했습니다.');
+        }
+        setLoading(false);
+    };
+
+    const handleInputBlur = () => {
+        // Blur 시 추가 동작이 필요하면 구현
+    };
+
+    const playAudio = async (url) => {
+        try {
+            if (sound) {
+                await sound.unloadAsync();
+                setSound(null);
+            }
+            const { sound: newSound } = await Audio.Sound.createAsync({ uri: url });
+            setSound(newSound);
+            await newSound.playAsync();
+        } catch (e) {
+            console.error('오디오 재생 오류:', e);
+        }
+    };
 
     return (
         <TouchableWithoutFeedback onPress={() => {}}>
@@ -34,11 +74,18 @@ const InputSection = ({
                     placeholder=""
                     value={inputText}
                     onChangeText={(text) => {
+                        setInputText(text);
                         if (onTextChange) {
                             onTextChange(text);
                         }
                     }}
                     multiline={true}
+                    blurOnSubmit={false}
+                    onKeyPress={({ nativeEvent }) => {
+                        if (nativeEvent.key === 'Enter' && !nativeEvent.shiftKey) {
+                            handleInputSubmit();
+                        }
+                    }}
                     onSubmitEditing={handleInputSubmit}
                     onBlur={handleInputBlur}
                     returnKeyType="done"
@@ -85,7 +132,10 @@ const InputSection = ({
                         
                         {/* 오디오 재생 버튼 (백엔드에서 TTS로 생성된 오디오) */}
                         {result.audio_url && (
-                            <TouchableOpacity style={styles.audioButton}>
+                            <TouchableOpacity
+                                style={styles.audioButton}
+                                onPress={() => playAudio(result.audio_url)}
+                            >
                                 <Text style={styles.audioButtonText}>🔊 음성으로 듣기</Text>
                             </TouchableOpacity>
                         )}
@@ -233,4 +283,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default InputSection; 
+export default InputSection;
