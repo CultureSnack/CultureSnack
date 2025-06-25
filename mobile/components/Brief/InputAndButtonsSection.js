@@ -76,7 +76,7 @@ const InputAndButtonsSection = ({
             <View style={inputSectionStyles.outputSection}>
               {result.transcript && (
                 <View style={inputSectionStyles.transcriptSection}>
-                  <Text style={inputSectionStyles.transcriptLabel}>인식된 음성:</Text>
+                  {/* <Text style={inputSectionStyles.transcriptLabel}>인식된 음성:</Text> */}
                   <Text style={inputSectionStyles.transcriptText}>{result.transcript}</Text>
                 </View>
               )}
@@ -92,12 +92,12 @@ const InputAndButtonsSection = ({
                   />
                 </TouchableOpacity>
               )}
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={inputSectionStyles.clearResultButton}
                 onPress={handleClearResult}
               >
                 <Text style={inputSectionStyles.clearResultButtonText}>지우기</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           )}
         </View>
@@ -207,6 +207,7 @@ const inputSectionStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    top: -250, // 부모 기준 상단 정렬
     marginBottom: 8,
   },
   loadingText: {
@@ -319,9 +320,6 @@ const inputSectionStyles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  micIconActive: {
-    backgroundColor: theme.colors.secondary,
   },
     keyboardIcon: {
     width: 24,
