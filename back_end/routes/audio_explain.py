@@ -20,11 +20,6 @@ class TextRequest(BaseModel):
 
 router = APIRouter(prefix="/explain", tags=["Audio Explain"])
 
-# @router.post("/audio")
-# async def explain_audio(req: TextRequest, request: Request):
-#     # 오디오 설명용 엔드포인트 (구현 필요)
-#     return {"message": "audio endpoint"}
-
 @router.post("/text")
 async def explain_text(req: TextRequest, request: Request):
     result = explain_cultural_heritage(req.input)

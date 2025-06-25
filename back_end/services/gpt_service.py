@@ -19,6 +19,7 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY").strip())
 def explain_cultural_heritage(user_input: str) -> dict:
     # 입력값에서 공백 제거
     user_input_no_space = user_input.replace(' ', '')
+    print("사용자 입력 (공백 제거):", user_input_no_space)
 
     # 1. 첫 번째 엑셀에서 '데이터명' 검색 (공백 제거 후 비교)
     match1 = df1[df1['데이터명'].astype(str).str.replace(' ', '').str.contains(user_input_no_space, case=False, na=False)]

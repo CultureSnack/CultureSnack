@@ -36,7 +36,7 @@ export const explainAudio = async (audioFile) => {
             name: audioFile.name || 'audio.mp3',
         });
 
-        const response = await apis.post("/explain/audio", formData, {
+        const response = await apis.post(`${API_BASE_URL}/explain/audio`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -44,6 +44,10 @@ export const explainAudio = async (audioFile) => {
         return response.data;
     } catch (error) {
         console.error("오디오 설명 요청 오류:", error);
+        console.error("❌ 텍스트 설명 요청 오류:");
+        console.error("   상태 코드:", error.response?.status);
+        console.error("   에러 메시지:", error.response?.data);
+        console.error("   전체 에러:", error.message);
         throw error;
     }
 };
