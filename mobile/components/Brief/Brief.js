@@ -1,12 +1,11 @@
-import React, { useRef, useState } from 'react';
-import { View, StyleSheet, Dimensions, Animated, TouchableWithoutFeedback, Text } from 'react-native';
+import React, { useRef } from 'react';
+import { View, StyleSheet, Dimensions, Animated, TouchableWithoutFeedback, Text, ActivityIndicator, TextInput, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { Audio } from 'expo-av';
 import { theme } from '../../utils/theme';
 import TopNavigation from './TopNavigation';
 import MainContent from './MainContent';
-import InputSection from './InputSection';
-import ControlButtons from './ControlButtons';
+import InputAndButtonsSection from './InputAndButtonsSection';
 import {
   setInputText,
   setShowInput,
@@ -34,9 +33,9 @@ const Brief = ({ scrollToSection }) => {
   const showInput = useSelector(selectShowInput);
   const isListening = useSelector(selectIsListening);
 
-  const fadeAnim = useRef(new Animated.Value(1)).current;
   const inputRef = useRef(null);
   const recordingRef = useRef(null);
+  const soundRef = useRef(null);
 
   const RECORDING_OPTIONS = {
     android: {
@@ -68,7 +67,6 @@ const Brief = ({ scrollToSection }) => {
       recordingRef.current = recording;
       dispatch(setIsListening(true));
     } catch (e) {
-      console.error('녹음 시작 실패:', e);
       dispatch(setIsListening(false));
     }
   };
@@ -86,7 +84,6 @@ const Brief = ({ scrollToSection }) => {
         name: `recording-${Date.now()}.wav`,
       };
     } catch (e) {
-      console.error('녹음 종료 실패:', e);
       dispatch(setIsListening(false));
       return null;
     }
@@ -115,13 +112,14 @@ const Brief = ({ scrollToSection }) => {
   const handleConvert = async (text) => {
     try {
       await dispatch(requestExplainText(text));
-    } catch (error) {
-      console.error('텍스트 설명 요청 실패:', error);
-    }
+    } catch (error) {}
   };
 
   const handleInputSubmit = () => {
-    if (inputText.trim()) handleConvert(inputText);
+    if (inputText && inputText.trim()) {
+      // 전송 로직
+      handleConvert(inputText);
+    }
   };
 
   const handleInputBlur = () => {
@@ -136,30 +134,39 @@ const Brief = ({ scrollToSection }) => {
     dispatch(clearResult());
   };
 
+  const playAudio = async (url) => {
+    try {
+      if (soundRef.current) {
+        await soundRef.current.unloadAsync();
+        soundRef.current = null;
+      }
+      const { sound } = await Audio.Sound.createAsync({ uri: url });
+      soundRef.current = sound;
+      await sound.playAsync();
+    } catch (e) {}
+  };
+
   return (
     <TouchableWithoutFeedback onPress={() => {}}>
       <View style={styles.container}>
         <TopNavigation scrollToSection={scrollToSection} />
         <View style={styles.mainContent}>
           <MainContent showInput={showInput} inputText={inputText} result={result} />
-          <InputSection
+          <InputAndButtonsSection
             showInput={showInput}
             inputText={inputText}
             result={result}
             loading={loading}
             error={error}
             inputRef={inputRef}
+            isListening={isListening}
             handleInputSubmit={handleInputSubmit}
             handleInputBlur={handleInputBlur}
             onTextChange={handleTextChange}
-            onClearResult={handleClearResult}
-          />
-          <ControlButtons
-            isListening={isListening}
-            loading={loading}
+            handleClearResult={handleClearResult}
             handleMicPress={handleMicPress}
             handleKeyboardPress={handleKeyboardPress}
-            showInput={showInput}
+            playAudio={playAudio}
           />
         </View>
       </View>
