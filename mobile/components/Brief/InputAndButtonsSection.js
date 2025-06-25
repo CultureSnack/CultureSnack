@@ -24,14 +24,23 @@ const InputAndButtonsSection = ({
   return (
     <View style={inputSectionStyles.container}>
       
+{/* 입력 안내 프롬프트 */}
+      {!showInput && (
+        <Text style={inputSectionStyles.inputPrompt}>말하거나 입력도 가능해요</Text>
+      )}
 
+     
       {/* 입력 및 결과, 로딩, 에러 */}
       {(showInput || inputText || result || loading || error) && (
         <View style={inputSectionStyles.inputContent}>
           {/* 입력 텍스트 표시 */}
-          {(showInput || inputText) && (
+          {(!showInput && inputText) ? (
+            <TouchableOpacity onPress={handleClearResult} activeOpacity={0.7}>
+              <Text style={inputSectionStyles.inputText}>{inputText}</Text>
+            </TouchableOpacity>
+          ) : (showInput && inputText) ? (
             <Text style={inputSectionStyles.inputText}>{inputText}</Text>
-          )}
+          ) : null}
 
           {/* 숨겨진 TextInput */}
           {showInput && (
@@ -90,6 +99,7 @@ const InputAndButtonsSection = ({
                     source={require('../../assets/sound.png')}
                     style={{ width: 32, height: 32, resizeMode: 'contain' }}
                   />
+                  
                 </TouchableOpacity>
               )}
               {/* <TouchableOpacity
@@ -103,10 +113,7 @@ const InputAndButtonsSection = ({
         </View>
       )}
 
-    {/* 입력 안내 프롬프트 */}
-      {!showInput && (
-        <Text style={inputSectionStyles.inputPrompt}>말하거나 입력도 가능해요</Text>
-      )}
+    
       {/* Control Buttons */}
       <View style={inputSectionStyles.buttonsRow}>
         
@@ -115,10 +122,12 @@ const InputAndButtonsSection = ({
           onPress={handleMicPress}
           disabled={loading}
         >
+            
           <Image
             source={require('../../assets/audio.png')}
             style={inputSectionStyles.micImage}
           />
+          
           <View style={inputSectionStyles.micButtonInner}>
             <View style={[inputSectionStyles.micIcon, isListening && inputSectionStyles.micIconActive]}>
               <View style={inputSectionStyles.micCore} />
@@ -133,7 +142,7 @@ const InputAndButtonsSection = ({
             </View>
           </View>
         </TouchableOpacity>
-       <TouchableOpacity style={inputSectionStyles.keyboardButton} onPress={handleKeyboardPress}>
+       <TouchableOpacity style={inputSectionStyles.keyboardButton} onPress={inputText ? handleClearResult : handleKeyboardPress}>
          <View style={inputSectionStyles.keyboardIcon}>
            <View style={inputSectionStyles.keyboardRow}>
              <View style={inputSectionStyles.key} />
@@ -158,6 +167,10 @@ const InputAndButtonsSection = ({
          <Text style={inputSectionStyles.keyboardLabel}>입력</Text>
        </TouchableOpacity>
      </View>
+      {/* 안내 프롬프트를 버튼 아래에 위치 */}
+      {!showInput && (
+        <Text style={inputSectionStyles.inputPromptRow}>음성은 말한후 다시한번 버튼을 눌러주세요</Text>
+      )}
     </View>
    );
  };
@@ -179,13 +192,22 @@ const inputSectionStyles = StyleSheet.create({
   },
   inputPrompt: {
     fontSize: 16,
-    color: theme.colors.white,
+    color: theme.colors.primary,
     textAlign: 'center',
-    marginBottom: 8,
+    marginBottom: 16,
+    fontFamily: theme.fonts.regular,
+  },
+  inputPromptRow: {
+    fontSize: 14,
+    color: theme.colors.primary,
+    textAlign: 'center',
+    marginBottom: 25,
+    fontFamily: theme.fonts.regular,
   },
   inputContent: {
     width: '100%',
     marginBottom: 8,
+    maxHeight: 300, // 최대 높이 설정
   },
   inputText: {
     fontSize: 20,
@@ -193,7 +215,7 @@ const inputSectionStyles = StyleSheet.create({
     padding: 8,
     borderRadius: 8,
     backgroundColor: theme.colors.card,
-    marginBottom: 8,
+    marginBottom: 80,
     top: -150, // 부모 기준 상단 정렬
     alignSelf: 'center', // 부모 기준 가로 중앙
   },
@@ -208,6 +230,7 @@ const inputSectionStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     top: -250, // 부모 기준 상단 정렬
+    marginTop: 80,
     marginBottom: 8,
   },
   loadingText: {
@@ -241,13 +264,14 @@ const inputSectionStyles = StyleSheet.create({
     backgroundColor: theme.colors.card,
     borderRadius: 8,
     padding: 16,
-    marginBottom: 8,
+    marginBottom: 35,
     alignItems: 'center', // 가로 중앙 정렬
     justifyContent: 'center', // 세로 중앙 정렬
     alignSelf: 'center', // 부모 기준 가로 중앙
     minHeight: 200, // 충분한 높이 확보(필요시 조정)
     width: '90%', // 넓이 제한(필요시 조정)
     top: -150, // 부모 기준 상단 정렬
+    maxHeight: 250, // 최대 높이 설정
   },
   transcriptSection: {
     marginBottom: 8,
@@ -257,16 +281,17 @@ const inputSectionStyles = StyleSheet.create({
     justifyContent: 'center',
     fontSize: 14,
     color: theme.colors.text,
-    marginBottom: 4,
+    marginBottom: 8,
   },
   transcriptText: {
     fontSize: 16,
     color: theme.colors.text,
   },
   convertedText: {
-    fontSize: 18,
+    fontSize: 16,
     color: theme.colors.text,
-    marginBottom: 8,
+    marginBottom: 30,
+    maxHeight: 150, // 최대 높이 설정
   },
   audioButton: {
     alignItems: 'center',
@@ -353,15 +378,11 @@ const inputSectionStyles = StyleSheet.create({
     marginTop: 2,
   },
   inputPrompt: {
-    position: 'absolute',
-    width: 200,
-    left: '50%',
-    marginLeft: -100,
-    top: 580,
-    fontSize: 12,
-    fontFamily: theme.fonts.regular,
-    color: '#F7E7CE',
+    fontSize: 16,
+    color: theme.colors.text,
     textAlign: 'center',
+    marginBottom: 30,
+    fontFamily: theme.fonts.regular,
   },
 //   keyboardButton: {
 //     backgroundColor: theme.colors.secondary,
