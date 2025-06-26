@@ -49,7 +49,10 @@ const InputAndButtonsSection = ({
         <View style={typography.brief.buttonsRow}>
           <TouchableOpacity
             style={[typography.brief.micButton, isListening && typography.brief.micButtonActive]}
-            onPress={handleMicPress}
+            onPress={() => {
+              handleClearResult();
+              handleMicPress();
+            }}
             disabled={loading}
           >
             <Image

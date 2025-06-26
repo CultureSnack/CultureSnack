@@ -201,7 +201,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     convertedText: {
-        fontSize: 16,
+        fontSize: 20,
+        marginTop: 100,
         color: theme.colors.text,
         marginBottom: 16,
         textAlign: 'center',
@@ -211,6 +212,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width: 32,
         height: 32,
+        top: -285, // 오디오 버튼 위치 조정
+        right: -150, // 오른쪽 여백 추가,
     },
 });
 
