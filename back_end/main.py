@@ -11,7 +11,7 @@ app.add_middleware(
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
+    allow_headers=["*"], 
 )
 
 # 정적 오디오 파일 경로 설정
