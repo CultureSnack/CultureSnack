@@ -5,16 +5,26 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-# CORS 미들웨어 설정 - 모바일 앱과 웹에서 모두 접근 가능하도록
+# CORS 설정
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 개발 환경에서는 모든 origin 허용
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# 정적 오디오 파일 경로 설정
 app.mount("/audio", StaticFiles(directory="static/audio"), name="audio")
 
+# 라우터 등록
 app.include_router(text_explain.router)
 app.include_router(audio_explain.router)
+
+# ✅ Railway 실행 포인트
+if __name__ == "__main__":
+    import uvicorn
+    import os
+
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port)

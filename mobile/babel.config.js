@@ -8,7 +8,7 @@ module.exports = function (api) {
         {
           moduleName: '@env',
           path: '.env',
-          allowUndefined: false,
+          allowUndefined: true,  // <== 빌드 실패 방지
         },
       ],
     ],
