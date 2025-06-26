@@ -16,7 +16,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.kimking.mobile"
     },
     "web": {
       "bundler": "metro",
@@ -51,6 +52,12 @@
         "asset": "./assets/fonts/PlayfairDisplay-Bold.ttf",
         "family": "PlayfairDisplay-Bold"
       }
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "6c010cc9-348a-4b07-9524-dafd5fb55c17"
+      }
+    }
   }
 }
