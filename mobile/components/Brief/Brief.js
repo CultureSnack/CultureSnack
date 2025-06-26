@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { View, StyleSheet, Dimensions, Animated, TouchableWithoutFeedback, Text, ActivityIndicator, TextInput, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, StyleSheet, Dimensions, Animated, TouchableWithoutFeedback, Text, ActivityIndicator, TextInput, Image, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { Audio } from 'expo-av';
 import { theme } from '../../utils/theme';
@@ -23,7 +23,7 @@ import {
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('window');
 
-const Brief = ({ scrollToSection }) => {
+const Brief = ({ scrollToSection, isTableOfContents = false, currentSection }) => {
   const dispatch = useDispatch();
 
   const inputText = useSelector(selectInputText);
@@ -101,12 +101,14 @@ const Brief = ({ scrollToSection }) => {
   };
 
   const handleKeyboardPress = () => {
+    // 기존 입력이 있어도 새로 입력 모드로 전환
+    dispatch(setInputText('')); // 기존 텍스트 클리어
     dispatch(setShowInput(true));
     setTimeout(() => {
       if (inputRef.current) {
         inputRef.current.focus();
       }
-    }, 100);
+    }, 150); // 조금 더 긴 지연시간으로 안정성 확보
   };
 
   const handleConvert = async (text) => {
@@ -147,40 +149,56 @@ const Brief = ({ scrollToSection }) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => {}}>
-      <View style={styles.container}>
-        <TopNavigation scrollToSection={scrollToSection} />
-        <View style={styles.mainContent}>
-          <MainContent showInput={showInput} inputText={inputText} result={result} />
-          <InputAndButtonsSection
-            showInput={showInput}
-            inputText={inputText}
-            result={result}
-            loading={loading}
-            error={error}
-            inputRef={inputRef}
-            isListening={isListening}
-            handleInputSubmit={handleInputSubmit}
-            handleInputBlur={handleInputBlur}
-            onTextChange={handleTextChange}
-            handleClearResult={handleClearResult}
-            handleMicPress={handleMicPress}
-            handleKeyboardPress={handleKeyboardPress}
-            playAudio={playAudio}
-          />
+    <SafeAreaView style={styles.safeArea}>
+      <TouchableWithoutFeedback onPress={() => {}}>
+        <View style={styles.container}>
+          <TopNavigation scrollToSection={scrollToSection} isTableOfContents={isTableOfContents} />
+          <View style={styles.mainContent}>
+            <MainContent 
+              showInput={showInput} 
+              inputText={inputText} 
+              result={result} 
+              loading={loading}
+              error={error}
+              handleInputSubmit={handleInputSubmit}
+              handleClearResult={handleClearResult}
+              playAudio={playAudio}
+            />
+            <InputAndButtonsSection
+              showInput={showInput}
+              inputText={inputText}
+              result={result}
+              loading={loading}
+              error={error}
+              inputRef={inputRef}
+              isListening={isListening}
+              handleInputSubmit={handleInputSubmit}
+              handleInputBlur={handleInputBlur}
+              onTextChange={handleTextChange}
+              handleClearResult={handleClearResult}
+              handleMicPress={handleMicPress}
+              handleKeyboardPress={handleKeyboardPress}
+              playAudio={playAudio}
+            />
+          </View>
         </View>
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </SafeAreaView>
   );
 };
 
+
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
+  },
   container: {
     flex: 1,
     backgroundColor: theme.colors.background,
-    position: 'relative',
     width: screenWidth,
-    height: screenHeight,
+    overflow: 'hidden',
+    position: 'relative',
   },
   mainContent: {
     flex: 1,
