@@ -1,12 +1,11 @@
-import React, { useRef, useState } from 'react';
-import { View, StyleSheet, Dimensions, Animated, TouchableWithoutFeedback, Text } from 'react-native';
+import React, { useRef } from 'react';
+import { View, StyleSheet, Dimensions, Animated, TouchableWithoutFeedback, Text, ActivityIndicator, TextInput, Image, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { Audio } from 'expo-av';
 import { theme } from '../../utils/theme';
 import TopNavigation from './TopNavigation';
 import MainContent from './MainContent';
-import InputSection from './InputSection';
-import ControlButtons from './ControlButtons';
+import InputAndButtonsSection from './InputAndButtonsSection';
 import {
   setInputText,
   setShowInput,
@@ -24,7 +23,7 @@ import {
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('window');
 
-const Brief = ({ scrollToSection }) => {
+const Brief = ({ scrollToSection, isTableOfContents = false, currentSection }) => {
   const dispatch = useDispatch();
 
   const inputText = useSelector(selectInputText);
@@ -34,9 +33,9 @@ const Brief = ({ scrollToSection }) => {
   const showInput = useSelector(selectShowInput);
   const isListening = useSelector(selectIsListening);
 
-  const fadeAnim = useRef(new Animated.Value(1)).current;
   const inputRef = useRef(null);
   const recordingRef = useRef(null);
+  const soundRef = useRef(null);
 
   const RECORDING_OPTIONS = {
     android: {
@@ -68,7 +67,6 @@ const Brief = ({ scrollToSection }) => {
       recordingRef.current = recording;
       dispatch(setIsListening(true));
     } catch (e) {
-      console.error('녹음 시작 실패:', e);
       dispatch(setIsListening(false));
     }
   };
@@ -86,7 +84,6 @@ const Brief = ({ scrollToSection }) => {
         name: `recording-${Date.now()}.wav`,
       };
     } catch (e) {
-      console.error('녹음 종료 실패:', e);
       dispatch(setIsListening(false));
       return null;
     }
@@ -104,24 +101,27 @@ const Brief = ({ scrollToSection }) => {
   };
 
   const handleKeyboardPress = () => {
+    // 기존 입력이 있어도 새로 입력 모드로 전환
+    dispatch(setInputText('')); // 기존 텍스트 클리어
     dispatch(setShowInput(true));
     setTimeout(() => {
       if (inputRef.current) {
         inputRef.current.focus();
       }
-    }, 100);
+    }, 150); // 조금 더 긴 지연시간으로 안정성 확보
   };
 
   const handleConvert = async (text) => {
     try {
       await dispatch(requestExplainText(text));
-    } catch (error) {
-      console.error('텍스트 설명 요청 실패:', error);
-    }
+    } catch (error) {}
   };
 
   const handleInputSubmit = () => {
-    if (inputText.trim()) handleConvert(inputText);
+    if (inputText && inputText.trim()) {
+      // 전송 로직
+      handleConvert(inputText);
+    }
   };
 
   const handleInputBlur = () => {
@@ -136,44 +136,69 @@ const Brief = ({ scrollToSection }) => {
     dispatch(clearResult());
   };
 
+  const playAudio = async (url) => {
+    try {
+      if (soundRef.current) {
+        await soundRef.current.unloadAsync();
+        soundRef.current = null;
+      }
+      const { sound } = await Audio.Sound.createAsync({ uri: url });
+      soundRef.current = sound;
+      await sound.playAsync();
+    } catch (e) {}
+  };
+
   return (
-    <TouchableWithoutFeedback onPress={() => {}}>
-      <View style={styles.container}>
-        <TopNavigation scrollToSection={scrollToSection} />
-        <View style={styles.mainContent}>
-          <MainContent showInput={showInput} inputText={inputText} result={result} />
-          <InputSection
-            showInput={showInput}
-            inputText={inputText}
-            result={result}
-            loading={loading}
-            error={error}
-            inputRef={inputRef}
-            handleInputSubmit={handleInputSubmit}
-            handleInputBlur={handleInputBlur}
-            onTextChange={handleTextChange}
-            onClearResult={handleClearResult}
-          />
-          <ControlButtons
-            isListening={isListening}
-            loading={loading}
-            handleMicPress={handleMicPress}
-            handleKeyboardPress={handleKeyboardPress}
-            showInput={showInput}
-          />
+    <SafeAreaView style={styles.safeArea}>
+      <TouchableWithoutFeedback onPress={() => {}}>
+        <View style={styles.container}>
+          <TopNavigation scrollToSection={scrollToSection} isTableOfContents={isTableOfContents} />
+          <View style={styles.mainContent}>
+            <MainContent 
+              showInput={showInput} 
+              inputText={inputText} 
+              result={result} 
+              loading={loading}
+              error={error}
+              handleInputSubmit={handleInputSubmit}
+              handleClearResult={handleClearResult}
+              playAudio={playAudio}
+            />
+            <InputAndButtonsSection
+              showInput={showInput}
+              inputText={inputText}
+              result={result}
+              loading={loading}
+              error={error}
+              inputRef={inputRef}
+              isListening={isListening}
+              handleInputSubmit={handleInputSubmit}
+              handleInputBlur={handleInputBlur}
+              onTextChange={handleTextChange}
+              handleClearResult={handleClearResult}
+              handleMicPress={handleMicPress}
+              handleKeyboardPress={handleKeyboardPress}
+              playAudio={playAudio}
+            />
+          </View>
         </View>
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </SafeAreaView>
   );
 };
 
+
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
+  },
   container: {
     flex: 1,
     backgroundColor: theme.colors.background,
-    position: 'relative',
     width: screenWidth,
-    height: screenHeight,
+    overflow: 'hidden',
+    position: 'relative',
   },
   mainContent: {
     flex: 1,

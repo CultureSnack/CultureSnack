@@ -1,4 +1,5 @@
-import { View, StyleSheet, StatusBar, ScrollView, Dimensions } from 'react-native';
+import { View, StyleSheet, ScrollView, Dimensions, SafeAreaView } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import React, { useRef, useEffect } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { theme, debugInfo } from '../utils/theme';
@@ -20,21 +21,49 @@ const Main = () => {
     const scrollViewRef = useRef(null);
     const navigation = useNavigation();
     const route = useRoute();
+    const [currentSection, setCurrentSection] = React.useState(0);
+    const [isScrollingProgrammatically, setIsScrollingProgrammatically] = React.useState(false);
 
     // 특정 섹션으로 스크롤 이동
     const scrollToSection = (sectionIndex) => {
         if (scrollViewRef.current) {
+            // 프로그래매틱 스크롤 시작
+            setIsScrollingProgrammatically(true);
+            // 즉시 currentSection 업데이트 (특히 한입요약 버튼용)
+            setCurrentSection(sectionIndex);
             scrollViewRef.current.scrollTo({
                 y: screenHeight * sectionIndex,
                 animated: true,
             });
+            // 스크롤 완료 후 플래그 해제 (약간의 여유시간)
+            setTimeout(() => {
+                setIsScrollingProgrammatically(false);
+            }, 800);
         }
     };
+
+    // 스크롤 변화 감지 - 더 부드럽게
+    const handleScroll = (event) => {
+        // 프로그래매틱 스크롤 중에는 무시
+        if (isScrollingProgrammatically) {
+            return;
+        }
+        
+        const scrollY = event.nativeEvent.contentOffset.y;
+        const section = Math.floor(scrollY / screenHeight + 0.5); // 50% 지점에서 변경
+        if (section !== currentSection && section >= 0 && section <= 2) {
+            setCurrentSection(section);
+        }
+    };
+
+    // 네비게이션 바 강제 표시
+
 
     // route params에서 scrollToSection이 있으면 자동으로 스크롤
     useEffect(() => {
         if (route.params?.scrollToSection !== undefined) {
-            console.log('📱 자동 스크롤 요청:', route.params.scrollToSection);
+            // 즉시 currentSection 업데이트
+            setCurrentSection(route.params.scrollToSection);
             // 컴포넌트가 완전히 마운트된 후 스크롤
             setTimeout(() => {
                 scrollToSection(route.params.scrollToSection);
@@ -43,14 +72,14 @@ const Main = () => {
     }, [route.params]);
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.safeArea}>
             <StatusBar 
-                barStyle="light-content" 
-                backgroundColor={theme.colors.background} 
-                translucent={false} 
+                style="light"
+                backgroundColor={theme.colors.background}
+                translucent={false}
             />
-            
-            <ScrollView
+            <View style={styles.container}>
+                <ScrollView
                 ref={scrollViewRef}
                 style={styles.scrollView}
                 showsVerticalScrollIndicator={false}
@@ -58,6 +87,8 @@ const Main = () => {
                 decelerationRate="fast"
                 snapToInterval={screenHeight}
                 snapToAlignment="start"
+                onScroll={handleScroll}
+                scrollEventThrottle={100}
             >
                 {/* 첫 번째 화면 - 메인 */}
                 <View style={styles.screen}>
@@ -75,14 +106,24 @@ const Main = () => {
 
                 {/* 세 번째 화면 - Brief */}
                 <View style={styles.screen}>
-                    <Brief scrollToSection={scrollToSection} navigation={navigation} />
+                    <Brief 
+                        scrollToSection={scrollToSection} 
+                        navigation={navigation}
+                        isTableOfContents={currentSection === 1}
+                        currentSection={currentSection}
+                    />
                 </View>
             </ScrollView>
-        </View>
+            </View>
+        </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        backgroundColor: theme.colors.background,
+    },
     container: {
         flex: 1,
         backgroundColor: theme.colors.background,

@@ -110,14 +110,14 @@ const styles = StyleSheet.create({
     leftTitle: {
         position: 'absolute',
         left: -107,
-        top: '40%',
+        top: '50%', // 40%에서 50%로 아래로 이동
         transform: [{ translateY: -100 }, { rotate: '90deg' }],
         zIndex: 10,
     },
     verticalTitle: typography.tableOfContents.verticalTitle,
     topRightLogo: {
         position: 'absolute',
-        top: 60,
+        top: 100, // 60에서 100으로 아래로 이동
         right: 30,
         width: 50,
         height: 50,
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     },
     topLine: {
         position: 'absolute',
-        top: 140,
+        top: 180, // 140에서 180으로 아래로 이동
         left: 128,
         right: 30,
         height: 2,
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         paddingLeft: 120,
         paddingRight: 40,
-        paddingTop: 180,
+        paddingTop: 200, // 250에서 200으로 위로 이동
         paddingBottom: 100,
     },
     contentItem: {
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     },
     bottomDecoration: {
         position: 'absolute',
-        bottom: 0,
+        bottom: 40, // 0에서 40으로 위로 이동
         left: 0,
         right: 0,
         height: screenHeight * 0.15,
@@ -172,14 +172,14 @@ const styles = StyleSheet.create({
     leftDecoration: {
         position: 'absolute',
         left: screenWidth * -0.06,
-        top: screenHeight * 0.85,
+        top: screenHeight * 0.82, // 0.86에서 0.82로 위로 이동
         width: screenWidth * 0.32,
         height: screenWidth * 0.32,
     },
     rightDecoration: {
         position: 'absolute',
         right: screenWidth * -0.07,
-        top: screenHeight * 0.85,
+        top: screenHeight * 0.82, // 0.86에서 0.82로 위로 이동
         width: screenWidth * 0.32,
         height: screenWidth * 0.32,
     },

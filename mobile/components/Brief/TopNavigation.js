@@ -1,26 +1,32 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { theme } from '../../utils/theme';
 
 const { width: screenWidth } = Dimensions.get('window');
 
-const TopNavigation = ({ scrollToSection }) => {
-
+const TopNavigation = ({ scrollToSection, isTableOfContents = false }) => {
     const navigation = useNavigation();
+    const fadeAnim = useRef(new Animated.Value(1)).current;
+
+    useEffect(() => {
+        Animated.timing(fadeAnim, {
+            toValue: isTableOfContents ? 0 : 1,
+            duration: 200,
+            useNativeDriver: true,
+        }).start();
+    }, [isTableOfContents, fadeAnim]);
 
     const handleSnackGuidePress = () => {
-        console.log('🔄 Brief에서 Snack Guide 버튼 클릭');
         try {
             navigation.navigate('CultureManual');
-            console.log('✅ Brief → CultureManual 이동');
         } catch (error) {
             console.error('❌ Brief Navigation 에러:', error);
         }
     };
     
     return (
-        <View style={styles.topNavigation}>
+        <Animated.View style={[styles.topNavigation, { opacity: fadeAnim }]}>
             <TouchableOpacity 
                 style={styles.leftSection}
                 onPress={handleSnackGuidePress}
@@ -75,14 +81,14 @@ const TopNavigation = ({ scrollToSection }) => {
                     (내 문화 취향 찾기)
                 </Text>
             </TouchableOpacity>
-        </View>
+        </Animated.View>
     );
 };
 
 const styles = StyleSheet.create({
     topNavigation: {
         position: 'absolute',
-        top: 20,
+        top: 40,
         left: 0,
         right: 0,
         height: 120,
@@ -92,6 +98,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 15,
+        transform: [{ translateY: -50 }],
     },
     leftSection: {
         flex: 1,
