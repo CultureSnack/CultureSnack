@@ -23,5 +23,5 @@ ENV PORT=8000
 
 EXPOSE $PORT
 
-# Railway의 동적 PORT 사용
-CMD python -m uvicorn main:app --host 0.0.0.0 --port $PORT 
+# uvicorn 직접 실행 (main.py의 if __name__ 부분 건너뛰기)
+CMD ["sh", "-c", "python -m uvicorn main:app --host 0.0.0.0 --port $PORT"] 
