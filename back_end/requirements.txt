@@ -3,9 +3,7 @@ uvicorn[standard]
 python-multipart
 openai>=1.0.0
 pandas
-openpyxl
 python-dotenv
 gtts
-pydantic
 requests
 openai-whisper 
