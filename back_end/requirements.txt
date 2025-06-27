@@ -9,4 +9,5 @@ pandas
 python-dotenv
 gtts
 requests
-openai-whisper 
+openai-whisper
+ffmpeg-python 
