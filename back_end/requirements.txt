@@ -11,4 +11,7 @@ gtts
 requests
 openai-whisper
 ffmpeg-python
-openpyxl 
+openpyxl
+librosa
+soundfile
+pydub 
