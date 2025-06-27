@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "mobile",
-    "slug": "mobile",
+    "name": "CultureSnack",
+    "slug": "culture-snack",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "mobile",
+    "scheme": "culturesnack",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -17,7 +17,8 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.kimking.mobile"
+      "package": "com.culturesnack.app",
+      "versionCode": 1
     },
     "web": {
       "bundler": "metro",
@@ -56,8 +57,9 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "ea409eea-ac5c-4101-957a-5e295e337d33"
+        "projectId": "b3c48c17-d6bf-4244-bb57-0ee20e8ff521"
       }
-    }
+    },
+    "owner": "seongeun223"
   }
 }
