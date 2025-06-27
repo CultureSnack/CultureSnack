@@ -6,4 +6,5 @@ pandas
 python-dotenv
 gtts
 requests
+torch==2.1.0+cpu --index-url https://download.pytorch.org/whl/cpu
 openai-whisper 
