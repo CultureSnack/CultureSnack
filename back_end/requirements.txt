@@ -5,7 +5,6 @@ openai
 pandas
 openpyxl
 python-dotenv
-openai-whisper
 gtts
 pydantic
 requests 

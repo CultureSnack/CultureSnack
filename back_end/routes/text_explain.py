@@ -1,11 +1,14 @@
 from fastapi import APIRouter, File, UploadFile, Request
-from services.stt_service import transcribe_audio
+from services.stt_service import STTService
 from services.gpt_service import explain_cultural_heritage
 from services.tts_service import generate_tts
 import uuid
 import os
 
 router = APIRouter(prefix="/explain", tags=["Audio Explain"])
+
+# STT 서비스 인스턴스 생성
+stt_service = STTService()
 
 @router.post("/audio")
 def explain_audio(request: Request, file: UploadFile = File(...)):
@@ -15,7 +18,7 @@ def explain_audio(request: Request, file: UploadFile = File(...)):
     with open(file_path, "wb") as f:
         f.write(file.file.read())
 
-    transcript = transcribe_audio(file_path)
+    transcript = stt_service.transcribe_audio(file_path)
     result = explain_cultural_heritage(transcript)
     result["transcript"] = transcript
 
