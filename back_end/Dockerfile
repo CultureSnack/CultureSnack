@@ -14,14 +14,11 @@ RUN pip install --no-cache-dir -r requirements.txt && \
 COPY main.py .
 COPY routes/ routes/
 COPY services/ services/
+COPY Procfile .
 
 # 불필요한 파일들 제거
 RUN rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
 
-# 환경변수 기본값 설정
+# 기본 포트 설정
 ENV PORT=8000
-
-EXPOSE $PORT
-
-# uvicorn 직접 실행 (main.py의 if __name__ 부분 건너뛰기)
-CMD ["sh", "-c", "python -m uvicorn main:app --host 0.0.0.0 --port $PORT"] 
+EXPOSE $PORT 
