@@ -10,4 +10,5 @@ python-dotenv
 gtts
 requests
 openai-whisper
-ffmpeg-python 
+ffmpeg-python
+openpyxl 

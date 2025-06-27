@@ -1,2 +1,2 @@
 [providers.nixpkgs]
-pkgs = ["ffmpeg"] 
+pkgs = ["ffmpeg", "ffmpeg-full"] 
