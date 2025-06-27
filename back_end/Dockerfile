@@ -18,8 +18,10 @@ COPY services/ services/
 # 불필요한 파일들 제거
 RUN rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
 
-# 포트 설정
-EXPOSE 8000
+# 환경변수 기본값 설정
+ENV PORT=8000
 
-# 실행 명령
-CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"] 
+EXPOSE $PORT
+
+# Railway의 동적 PORT 사용
+CMD python -m uvicorn main:app --host 0.0.0.0 --port $PORT 
