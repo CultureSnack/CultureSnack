@@ -7,4 +7,5 @@ openpyxl
 python-dotenv
 gtts
 pydantic
-requests 
+requests
+openai-whisper 
