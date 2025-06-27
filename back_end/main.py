@@ -2,8 +2,12 @@ from fastapi import FastAPI
 from routes import text_explain, audio_explain
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+import os
 
 app = FastAPI()
+
+# 필요한 디렉토리 생성
+os.makedirs("static/audio", exist_ok=True)
 
 # CORS 설정
 app.add_middleware(
