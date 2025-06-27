@@ -1,10 +1,10 @@
-import openai
 import os
 from typing import Optional
+from openai import OpenAI
 
 class STTService:
     def __init__(self):
-        openai.api_key = os.getenv("OPENAI_API_KEY")
+        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
         self.local_mode = os.environ.get("LOCAL_MODE", "false").lower() == "true"
     
     def transcribe_audio(self, audio_file_path: str) -> Optional[str]:
@@ -24,12 +24,12 @@ class STTService:
         """OpenAI API Whisper 사용"""
         try:
             with open(audio_file_path, 'rb') as audio_file:
-                response = openai.Audio.transcribe(
+                response = self.client.audio.transcriptions.create(
                     model="whisper-1",
                     file=audio_file,
                     language="ko"  # 한국어 설정
                 )
-                return response['text']
+                return response.text
         except Exception as e:
             print(f"OpenAI API 음성 인식 실패: {e}")
             return None

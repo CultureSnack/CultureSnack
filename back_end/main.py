@@ -8,6 +8,7 @@ app = FastAPI()
 
 # 필요한 디렉토리 생성
 os.makedirs("static/audio", exist_ok=True)
+os.makedirs("temp", exist_ok=True)
 
 # CORS 설정
 app.add_middleware(
