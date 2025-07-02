@@ -1,10 +1,10 @@
 
 import axios from 'axios';
-import { getApiConfig } from '../config/api.config';
+import API_CONFIG from '../config/api.config';
 import { explainText } from './ExplainAPICalls'; // 추가: explainText 가져오기
 
 // API 설정을 별도 파일에서 가져오기
-const config = getApiConfig();
+const config = API_CONFIG;
 
 console.log('🔗 API Base URL:', config.baseURL);
 
