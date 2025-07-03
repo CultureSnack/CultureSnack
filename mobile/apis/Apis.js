@@ -6,10 +6,10 @@ import { explainText } from './ExplainAPICalls'; // 추가: explainText 가져�
 // API 설정을 별도 파일에서 가져오기
 const config = API_CONFIG;
 
-console.log('🔗 API Base URL:', config.baseURL);
+console.log('🔗 API Base URL:', config.BASE_URL);
 
 const apis = axios.create({
-    baseURL: config.baseURL,
+    baseURL: config.BASE_URL,
     timeout: config.timeout,
     headers: {
         'Content-Type': 'application/json',
