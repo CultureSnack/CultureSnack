@@ -69,7 +69,7 @@ const MainContent = ({ showInput, inputText, result, loading, error, handleInput
                                     <Text style={styles.transcriptText}>{result.transcript}</Text>
                                 </View>
                             )}
-                            <Text style={styles.convertedText}>{result.summary},{result.difficult_words}</Text>
+                            <Text style={styles.convertedText}>{result.summary}</Text>
                             {result.audio_url && (
                                 <TouchableOpacity
                                     style={styles.audioButton}
