@@ -12,7 +12,12 @@ class AudioService:
             "WHISPER_API_URL", "https://api.openai.com/v1/audio/transcriptions"
         )
 
-    def convert_audio(self, input_file: str, output_file: str) -> bool:
+    def convert_audio(self, input_file: str, output_file: str) -> str:
+        """
+        오디오 파일을 16kHz PCM wav로 변환하여 저장.
+        output_file 파라미터가 wav가 아니면 확장자 강제로 wav로 변경.
+        반환값: 실제 저장된 wav 파일 경로(str)
+        """
         try:
             print(f"🔄 오디오 변환 시작: {input_file} -> {output_file}")
             audio, original_sr = librosa.load(input_file, sr=None)
@@ -23,40 +28,22 @@ class AudioService:
                 audio = librosa.resample(audio, orig_sr=original_sr, target_sr=target_sr)
                 print(f"🔄 리샘플링 완료: {original_sr}Hz -> {target_sr}Hz")
 
-            if output_file.lower().endswith('.mp3'):
-                self._save_as_mp3(audio, target_sr, output_file)
-            else:
-                sf.write(output_file, audio, target_sr)
-            print(f"✅ 오디오 변환 완료: {output_file}")
-            return True
+            # output_file 확장자를 무조건 .wav로
+            if not output_file.lower().endswith('.wav'):
+                output_file = output_file.rsplit('.', 1)[0] + '.wav'
+
+            sf.write(output_file, audio, target_sr, format='WAV', subtype='PCM_16')
+            print(f"✅ WAV 저장 완료: {output_file}")
+            return output_file
 
         except Exception as e:
             print(f"❌ 오디오 변환 실패: {e}")
-            return self._copy_file(input_file, output_file)
-
-    def _save_as_mp3(self, audio, sample_rate, output_file):
-        try:
-            from pydub import AudioSegment
-            audio_int16 = (audio * 32767).astype(np.int16)
-            audio_segment = AudioSegment(
-                audio_int16.tobytes(),
-                frame_rate=sample_rate,
-                sample_width=2,
-                channels=1
-            )
-            audio_segment.export(output_file, format="mp3", bitrate="128k")
-            print(f"✅ MP3 저장 완료: {output_file}")
-
-        except ImportError:
-            print("⚠️ pydub 없음, WAV로 저장")
-            wav_file = output_file.replace('.mp3', '.wav')
-            sf.write(wav_file, audio, sample_rate)
-        except Exception as e:
-            print(f"❌ MP3 저장 실패: {e}")
-            wav_file = output_file.replace('.mp3', '.wav')
-            sf.write(wav_file, audio, sample_rate)
+            if self._copy_file(input_file, output_file):
+                return output_file
+            return ""
 
     def _copy_file(self, src: str, dst: str) -> bool:
+        """파일 복사 (변환 실패시 대안)"""
         try:
             shutil.copy2(src, dst)
             print(f"✅ 파일 복사 완료: {src} -> {dst}")
@@ -67,8 +54,8 @@ class AudioService:
 
     def transcribe_audio(self, file_path: str) -> str:
         """
-        Whisper API(OpenAI 등)로만 동작!
-        로컬 모델은 사용하지 않음.
+        Whisper API(OpenAI 등)로만 동작! 
+        file_path는 반드시 wav 파일이어야 함.
         """
         try:
             print(f"🌐 Whisper API 요청: {file_path}")
@@ -92,10 +79,11 @@ class AudioService:
 
 # ========== 사용 예시 ==========
 # audio_service = AudioService()
-# 변환: audio_service.convert_audio("origin.wav", "converted.mp3")
-# 인식: result = audio_service.transcribe_audio("converted.mp3")
+# wav_path = audio_service.convert_audio("origin.mp3", "converted.wav")  # 입력 확장자 상관없이 .wav로 변환
+# result = audio_service.transcribe_audio(wav_path)
 # print(result)
 
+# ========== 주석 처리된 Whisper 코드 ==========
 
 # import whisper
 # import torch
