@@ -7,14 +7,12 @@ import requests
 
 class AudioService:
     def __init__(self):
-        # API 키와 URL을 환경변수에서 읽음
-        self.openai_api_key = os.environ.get("OPENAI_API_KEY").strip()
+        self.openai_api_key = (os.environ.get("OPENAI_API_KEY") or "").strip()
         self.api_url = os.environ.get(
             "WHISPER_API_URL", "https://api.openai.com/v1/audio/transcriptions"
         )
 
     def convert_audio(self, input_file: str, output_file: str) -> bool:
-        """오디오 파일을 16kHz로 리샘플링 및 변환(필요시 mp3 저장까지)"""
         try:
             print(f"🔄 오디오 변환 시작: {input_file} -> {output_file}")
             audio, original_sr = librosa.load(input_file, sr=None)
@@ -37,7 +35,6 @@ class AudioService:
             return self._copy_file(input_file, output_file)
 
     def _save_as_mp3(self, audio, sample_rate, output_file):
-        """MP3 포맷으로 저장 (pydub 필요, 없으면 WAV로 대체)"""
         try:
             from pydub import AudioSegment
             audio_int16 = (audio * 32767).astype(np.int16)
@@ -60,7 +57,6 @@ class AudioService:
             sf.write(wav_file, audio, sample_rate)
 
     def _copy_file(self, src: str, dst: str) -> bool:
-        """파일 복사 (변환 실패시 대안)"""
         try:
             shutil.copy2(src, dst)
             print(f"✅ 파일 복사 완료: {src} -> {dst}")
