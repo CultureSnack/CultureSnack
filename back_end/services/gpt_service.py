@@ -100,7 +100,7 @@ def explain_cultural_heritage(user_input: str) -> dict:
 
 def create_prompt(heritage_name, heritage_info):
     return (
-        f"한줄로 설명,구체적인 단어 사용. 부정문보다는 긍정문. 비유적 표현, 관용어, 한자어 지양. "
+        f"한 문장은 한 가지 정보만, 문장 길이는 50자 이내. 추상어 대신 구체적인 단어 사용. 부정문보다는 긍정문. 비유적 표현, 관용어, 한자어 지양. "
         f"Summarize the explanation about {heritage_name} so that even elementary school students can easily understand it. "
         f"Return the result strictly in JSON format with two keys: 'summary' and 'difficult_words'. "
         f"The format must be exactly like this: "
