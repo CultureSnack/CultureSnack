@@ -7,7 +7,6 @@ export const explainText = async (inputText) => {
         console.log('🚀 API 요청 시작:', inputText);
         console.log('🌐 요청 URL:', `${API_BASE_URL}/explain/text`);
 
-        // 실제 요청만 수행 (IS_MOCK 관련 코드 제거)
         const requestData = { input: inputText };
         console.log('📤 요청 데이터:', requestData);
 
@@ -56,7 +55,7 @@ export const explainAudio = async (audioFile) => {
 export const getAudioFile = (audioUrl) => {
     // audioUrl이 상대 경로면 전체 URL로 변환
     if (audioUrl && audioUrl.startsWith('/audio/')) {
-        return `${apis.defaults.baseURL}${audioUrl}`;
+        return `${apis.defaults.API_BASE_URL}${audioUrl}`;
     }
     return audioUrl;
 }; 

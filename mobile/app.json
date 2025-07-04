@@ -7,12 +7,17 @@
     "icon": "./assets/images/icon.png",
     "scheme": "culturesnack",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "assetBundlePatterns": [
-      "assets/fonts/*"
+      "assets/fonts/*",
+      "assets/images/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.culturesnack.app",
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -44,8 +49,9 @@
         {
           "fonts": [
             "./assets/fonts/PlayfairDisplay-Regular.ttf",
-            "./assets/fonts/PlayfairDisplay-SemiBold.ttf", 
-            "./assets/fonts/PlayfairDisplay-Bold.ttf"
+            "./assets/fonts/PlayfairDisplay-SemiBold.ttf",
+            "./assets/fonts/PlayfairDisplay-Bold.ttf",
+            "./assets/fonts/SpaceMono-Regular.ttf"
           ]
         }
       ]
@@ -56,9 +62,15 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "b3c48c17-d6bf-4244-bb57-0ee20e8ff521"
+        "projectId": "d95588f3-381f-40f4-bed9-e1909d80a9ee"
       }
     },
-    "owner": "seongeun223"
+    "owner": "kimking",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/d95588f3-381f-40f4-bed9-e1909d80a9ee"
+    }
   }
 }
