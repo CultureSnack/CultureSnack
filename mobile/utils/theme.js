@@ -303,7 +303,7 @@ export const typography = {
       width: SCREEN_WIDTH * 0.95,
       left: '50%',
       marginLeft: -(SCREEN_WIDTH * 0.95) / 2,
-      top: h(220),
+      top: h(240), // 220에서 240으로 수정
       fontSize: SCREEN_WIDTH * 0.038,
       fontFamily: theme.fonts.regular,
       color: '#F7E7CE',
@@ -314,7 +314,7 @@ export const typography = {
       width: SCREEN_WIDTH * 0.9,
       left: '50%',
       marginLeft: -(SCREEN_WIDTH * 0.9) / 2,
-      top: h(265),
+      top: h(280), // 265에서 280으로 수정
       fontSize: SCREEN_WIDTH * 0.12,
       fontFamily: theme.fonts.semibold,
       color: theme.colors.primary,
@@ -335,7 +335,7 @@ export const typography = {
     },
     loadingSection: {
       position: 'absolute',
-      top: h(280),
+      top: h(300), // 280에서 300으로 수정
       left: '50%',
       width: SCREEN_WIDTH * 0.8,
       marginLeft: -(SCREEN_WIDTH * 0.8) / 2,
@@ -390,7 +390,7 @@ export const typography = {
     },
     outputSection: {
       position: 'absolute',
-      top: h(220),
+      top: h(180), // 220에서 180으로 수정
       left: '50%',
       width: SCREEN_WIDTH * 0.9,
       marginLeft: -(SCREEN_WIDTH * 0.9) / 2,
@@ -398,32 +398,36 @@ export const typography = {
       borderRadius: w(8),
       padding: w(16),
       alignItems: 'center',
-      maxHeight: h(200),
+      maxHeight: h(320), // 200에서 320으로 수정
     },
     transcriptSection: {
       marginBottom: h(8),
     },
     transcriptText: {
       fontSize: w(16),
-      color: theme.colors.text,
+      color: '#F7E7CE', // theme.colors.text에서 '#F7E7CE'로 변경
       textAlign: 'center',
     },
     convertedText: {
-      fontSize: w(16),
-      color: theme.colors.text,
+      fontSize: w(20), // 16에서 20으로 수정
+      marginTop: h(100), // 새로 추가
+      color: '#F7E7CE', // theme.colors.text에서 '#F7E7CE'로 변경
       marginBottom: h(16),
       textAlign: 'center',
+      lineHeight: w(30), // 새로 추가
     },
     audioButton: {
       alignItems: 'center',
       justifyContent: 'center',
       width: w(32),
       height: w(32),
+      top: h(-285), // 새로 추가
+      right: w(-150), // 새로 추가
     },
     // TopNavigation 스타일들
     topNavigationContainer: {
       position: 'absolute',
-      top: h(40),
+      top: h(20), // 40에서 20으로 수정
       left: 0,
       right: 0,
       height: h(120),

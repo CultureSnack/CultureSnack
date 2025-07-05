@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions, ActivityIndicator, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, ActivityIndicator, TouchableOpacity, Image, Platform } from 'react-native';
 import { theme } from '../../utils/theme';
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -13,19 +13,21 @@ const MainContent = ({ showInput, inputText, result, loading, error, handleInput
             {shouldShowMainContent ? (
                 <>
                     <Text 
-                        style={styles.description}
+                        style={[styles.description, Platform.OS === 'web' && webStyles.description]}
                         numberOfLines={1}
                         adjustsFontSizeToFit={true}
                         minimumFontScale={0.8}
+                        selectable={false}
                     >
                         문화 관련 설명이 어렵다면 AI가 요약하고 쉬운말로 바꿔드릴게요.
                     </Text>
 
                     <Text 
-                        style={styles.brandTitle}
+                        style={[styles.brandTitle, Platform.OS === 'web' && webStyles.brandTitle]}
                         numberOfLines={1}
                         adjustsFontSizeToFit={true}
                         minimumFontScale={0.8}
+                        selectable={false}
                     >
                         CultureSnack
                     </Text>
@@ -35,45 +37,47 @@ const MainContent = ({ showInput, inputText, result, loading, error, handleInput
                     {/* 입력 텍스트 표시 */}
                     {inputText && (
                         <TouchableOpacity onPress={handleClearResult} activeOpacity={0.7}>
-                            <Text style={styles.inputText}>{inputText}</Text>
+                            <Text style={[styles.inputText, Platform.OS === 'web' && webStyles.inputText]} selectable={false}>{inputText}</Text>
                         </TouchableOpacity>
                     )}
 
                     {/* 로딩 표시 */}
                     {loading && (
-                        <View style={styles.loadingSection}>
+                        <View style={[styles.loadingSection, Platform.OS === 'web' && webStyles.loadingSection]}>
                             <ActivityIndicator size="large" color={theme.colors.primary} />
-                            <Text style={styles.loadingText}>쉬운 말 변환 중</Text>
+                            <Text style={[styles.loadingText, Platform.OS === 'web' && webStyles.loadingText]} selectable={false}>쉬운 말 변환 중</Text>
                         </View>
                     )}
 
                     {/* 에러 표시 */}
                     {error && !loading && (
-                        <View style={styles.errorSection}>
-                            <Text style={styles.errorTitle}>Error</Text>
-                            <Text style={styles.errorMessage}>다시 시도해주세요</Text>
+                        <View style={[styles.errorSection, Platform.OS === 'web' && webStyles.errorSection]}>
+                            <Text style={[styles.errorTitle, Platform.OS === 'web' && webStyles.errorTitle]} selectable={false}>Error</Text>
+                            <Text style={[styles.errorMessage, Platform.OS === 'web' && webStyles.errorMessage]} selectable={false}>다시 시도해주세요</Text>
                             <TouchableOpacity
-                                style={styles.retryButton}
+                                style={[styles.retryButton, Platform.OS === 'web' && webStyles.retryButton]}
                                 onPress={handleInputSubmit}
+                                activeOpacity={0.7}
                             >
-                                <Text style={styles.retryButtonText}>↻ 재요청</Text>
+                                <Text style={[styles.retryButtonText, Platform.OS === 'web' && webStyles.retryButtonText]} selectable={false}>↻ 재요청</Text>
                             </TouchableOpacity>
                         </View>
                     )}
 
                     {/* 결과 표시 */}
                     {result && !loading && !error && (
-                        <View style={styles.outputSection}>
+                        <View style={[styles.outputSection, Platform.OS === 'web' && webStyles.outputSection]}>
                             {result.transcript && (
-                                <View style={styles.transcriptSection}>
-                                    <Text style={styles.transcriptText}>{result.transcript}</Text>
+                                <View style={[styles.transcriptSection, Platform.OS === 'web' && webStyles.transcriptSection]}>
+                                    <Text style={[styles.transcriptText, Platform.OS === 'web' && webStyles.transcriptText]} selectable={false}>{result.transcript}</Text>
                                 </View>
                             )}
-                            <Text style={styles.convertedText}>{result.summary}</Text>
-                            {result.audio_url && (
+                            <Text style={[styles.convertedText, Platform.OS === 'web' && webStyles.convertedText]} selectable={false}>{result.summary}</Text>
+                            {result.audio_url && Platform.OS !== 'web' && (
                                 <TouchableOpacity
-                                    style={styles.audioButton}
+                                    style={[styles.audioButton, Platform.OS === 'web' && webStyles.audioButton]}
                                     onPress={() => playAudio(result.audio_url)}
+                                    activeOpacity={0.7}
                                 >
                                     <Image
                                         source={require('../../assets/sound.png')}
@@ -95,7 +99,7 @@ const styles = StyleSheet.create({
         width: screenWidth * 0.95,
         left: '50%',
         marginLeft: -(screenWidth * 0.95) / 2,
-        top: 220, // 250에서 220으로 위로 이동
+        top: 240, // 250에서 220으로 위로 이동
         fontSize: screenWidth * 0.038,
         fontFamily: theme.fonts.regular,
         color: '#F7E7CE',
@@ -106,7 +110,7 @@ const styles = StyleSheet.create({
         width: screenWidth * 0.9,
         left: '50%',
         marginLeft: -(screenWidth * 0.9) / 2,
-        top: 265, // 295에서 265로 위로 이동
+        top: 280, // 295에서 265로 위로 이동
         fontSize: screenWidth * 0.12,
         fontFamily: theme.fonts.semibold,
         color: theme.colors.primary,
@@ -127,7 +131,7 @@ const styles = StyleSheet.create({
     },
     loadingSection: {
         position: 'absolute',
-        top: 280, // 320에서 280으로 위로 이동
+        top: 300, // 320에서 280으로 위로 이동
         left: '50%',
         width: screenWidth * 0.8,
         marginLeft: -(screenWidth * 0.8) / 2,
@@ -182,7 +186,7 @@ const styles = StyleSheet.create({
     },
     outputSection: {
         position: 'absolute',
-        top: 220, // 250에서 220으로 위로 이동
+        top: 180, // 220에서 180으로 위로 이동하여 더 많은 공간 확보
         left: '50%',
         width: screenWidth * 0.9,
         marginLeft: -(screenWidth * 0.9) / 2,
@@ -190,22 +194,23 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         padding: 16,
         alignItems: 'center',
-        maxHeight: 200,
+        maxHeight: 320, // 200에서 320으로 늘려서 더 많은 텍스트 표시
     },
     transcriptSection: {
         marginBottom: 8,
     },
     transcriptText: {
         fontSize: 16,
-        color: theme.colors.text,
+        color: '#F7E7CE',
         textAlign: 'center',
     },
     convertedText: {
         fontSize: 20,
-        marginTop: 100,
-        color: theme.colors.text,
+        marginTop: 100, // 100에서 8로 줄여서 불필요한 공간 제거
+        color: '#F7E7CE',
         marginBottom: 16,
         textAlign: 'center',
+        lineHeight: 30, // 줄 간격 추가로 가독성 향상
     },
     audioButton: {
         alignItems: 'center',

@@ -88,7 +88,7 @@ const TopNavigation = ({ scrollToSection, isTableOfContents = false }) => {
 const styles = StyleSheet.create({
     topNavigation: {
         position: 'absolute',
-        top: 40,
+        top: 20,
         left: 0,
         right: 0,
         height: 120,
